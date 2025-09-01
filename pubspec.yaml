@@ -54,6 +54,16 @@ flutter:
   assets:
     - assets/images/
     - assets/images/Categories/
+    - assets/images/lights/
+    - assets/images/wires-and-cables/
+    - assets/images/motors/
+    - assets/images/switches/
+    - assets/images/circuit-breakers/
+    - assets/images/panels/
+    - assets/images/tools/
+    - assets/images/safety/
+    - assets/images/transformer/
+    - assets/images/conduits/
     - assets/Logo/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
