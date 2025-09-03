@@ -443,7 +443,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Widget _buildDeliveryAddressStep() {
-    return Form(
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 140),
+      child: Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -653,6 +655,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           _buildDeliveryOption('Same Day', 'Same day delivery', '₹199'),
         ],
       ),
+    ),
     );
   }
 

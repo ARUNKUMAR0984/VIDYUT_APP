@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
 import 'browse_brands_screen.dart';
 import 'power_generator_screen.dart';
 import 'select_state_screen.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
+import 'cart_screen.dart';
+import 'wishlist_screen.dart';
 
 class D_StateInfoScreen extends StatefulWidget {
   const D_StateInfoScreen({super.key});
@@ -15,6 +20,7 @@ class D_StateInfoScreen extends StatefulWidget {
 class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _sidebarSearchController = TextEditingController();
+  bool _isSidebarVisible = true;
 
   @override
   void dispose() {
@@ -26,222 +32,234 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Row(
         children: [
-          // Sidebar
-          Container(
-            width: 280,
-            decoration: BoxDecoration(
+          // Left Sidebar Navigation
+          if (_isSidebarVisible)
+            Container(
+              width: 280,
               color: Colors.white,
-              border: Border(
-                right: BorderSide(color: Colors.grey[300]!),
-              ),
-            ),
-            child: Column(
-              children: [
-                // Logo Section
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.blue[600],
-                          borderRadius: BorderRadius.circular(8),
+              child: Column(
+                children: [
+                  // Logo Section
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[800],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.flash_on,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.flash_on,
-                          color: Colors.white,
-                          size: 24,
+                        const SizedBox(width: 12),
+                        Text(
+                          'Vidyut',
+                          style: GoogleFonts.inter(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue[800],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        'Vidyut',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Search Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: TextField(
-                    controller: _sidebarSearchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.grey[300]!),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[50],
+                      ],
                     ),
                   ),
-                ),
-                
-                const SizedBox(height: 32),
-                
-                // Navigation Links
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
+                  
+                  // Search Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      controller: _sidebarSearchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
+                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                        suffixIcon: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            '⌘K',
+                            style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: Colors.grey[500],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[50],
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 30),
+                  
+                  // Navigation Links
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       children: [
                         _buildNavItem(Icons.home, 'Home'),
                         _buildNavItem(Icons.search, 'Search Products'),
-                        _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
+                        _buildNavItem(Icons.business, 'Browse Brands'),
                         _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
                         _buildNavItem(Icons.store, 'Sell'),
                         _buildNavItem(Icons.message, 'Messages'),
                         _buildNavItem(Icons.location_on, 'State Info', isActive: true),
                         _buildNavItem(Icons.trending_up, 'Trending'),
-                        
-                        const SizedBox(height: 30),
-                        
-                        // Account Section
+                        const Divider(height: 32),
                         _buildNavItem(Icons.settings, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
                   ),
-                ),
-                
-                // User Profile
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Colors.grey[300]!),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.blue[600],
-                        child: const Text(
-                          'N',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'John Doe',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Text(
-                              'john@example.com',
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          // Main Content
-          Expanded(
-            child: Container(
-              color: Colors.grey[50],
-              child: Column(
-                children: [
-                  // Header
+                  
+                  // User Profile
                   Container(
-                    padding: const EdgeInsets.all(32),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
                       border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]!),
+                        top: BorderSide(color: Colors.grey[300]!),
                       ),
                     ),
                     child: Row(
                       children: [
-                        // Logo
-                        Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: Colors.blue[600],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'V',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.blue[100],
+                          child: Text(
+                            'JD',
+                            style: GoogleFonts.inter(
+                              color: Colors.blue[800],
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                         const SizedBox(width: 12),
-                        const Text(
-                          'Vidyut',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'John Doe',
+                                style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                'john.doe@example.com',
+                                style: GoogleFonts.inter(
+                                  color: Colors.grey[600],
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        
-                        const SizedBox(width: 20),
-                        
-                        // Back Arrow
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          
+          // Main Content
+          Expanded(
+            child: Column(
+              children: [
+                // Top Header
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[200]!),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      // Menu Toggle Button
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isSidebarVisible = !_isSidebarVisible;
+                          });
+                        },
+                        icon: Icon(
+                          _isSidebarVisible ? Icons.menu_open : Icons.menu,
+                          color: Colors.blue[800],
+                          size: 24,
                         ),
-                        
-                        const SizedBox(width: 20),
-                        
-                        // Main Search Bar
-                        Expanded(
-                          flex: 2,
+                      ),
+                      
+                      const SizedBox(width: 16),
+                      
+                      // Logo
+                      Row(
+                        children: [
+                          Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                              color: Colors.blue[800],
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Icon(
+                              Icons.flash_on,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Vidyut',
+                            style: GoogleFonts.inter(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      const SizedBox(width: 40),
+                      
+                      // Search Bar
+                      Expanded(
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 600),
                           child: TextField(
                             controller: _searchController,
                             decoration: InputDecoration(
-                              hintText: 'Search products...',
-                              prefixIcon: const Icon(Icons.search),
+                              hintText: 'Search state information...',
+                              hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
+                              prefixIcon: const Icon(Icons.search, color: Colors.grey),
                               suffixIcon: Container(
-                                margin: const EdgeInsets.all(4),
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: const Text(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(
                                   '⌘K',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    color: Colors.grey[500],
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -249,88 +267,143 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide(color: Colors.grey[300]!),
                               ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
+                              ),
                               filled: true,
                               fillColor: Colors.grey[50],
                             ),
                           ),
                         ),
-                        
-                        const SizedBox(width: 20),
-                        
-                        // Location
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey[300]!),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                      ),
+                      
+                      const SizedBox(width: 20),
+                      
+                      // Right Side Actions
+                      Row(
+                        children: [
+                          // Location
+                          Row(
                             children: [
-                              Icon(Icons.location_on, color: Colors.grey[600]),
-                              const SizedBox(width: 8),
-                              const Text('Deliver to: Set location'),
+                              const Icon(Icons.location_on, color: Colors.grey, size: 20),
+                              const SizedBox(width: 4),
+                              Text(
+                                'Deliver to: Set location',
+                                style: GoogleFonts.inter(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        
-                        const SizedBox(width: 20),
-                        
-                        // Icons
-                        IconButton(
-                          icon: const Icon(Icons.notifications),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.favorite_border),
-                          onPressed: () {},
-                        ),
-                        
-                        const SizedBox(width: 20),
-                        
-                        // Buttons
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('Sign In'),
-                        ),
-                        const SizedBox(width: 12),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue[600],
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                          
+                          const SizedBox(width: 20),
+                          
+                          // Notifications
+                          IconButton(
+                            icon: const Icon(Icons.notifications_outlined, color: Colors.grey),
+                            onPressed: () {},
+                          ),
+                          
+                          // Wishlist
+                          IconButton(
+                            icon: const Icon(Icons.favorite_border, color: Colors.grey),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const WishlistScreen()),
+                              );
+                            },
+                          ),
+                          
+                          const SizedBox(width: 16),
+                          
+                          // Sign In
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                              );
+                            },
+                            child: Text(
+                              'Sign In',
+                              style: GoogleFonts.inter(
+                                color: Colors.grey[700],
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                          child: const Text('Sign Up'),
-                        ),
-                      ],
-                    ),
+                          
+                          const SizedBox(width: 12),
+                          
+                          // Sign Up Button
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue[800],
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            child: Text(
+                              'Sign Up',
+                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          
+                          const SizedBox(width: 16),
+                          
+                          // User Avatar
+                          CircleAvatar(
+                            radius: 18,
+                            backgroundColor: Colors.blue[100],
+                            child: Text(
+                              'JD',
+                              style: GoogleFonts.inter(
+                                color: Colors.blue[800],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  
-                  // Main Content
-                  Expanded(
+                ),
+                
+                // Main Content Area
+                Expanded(
+                  child: Container(
+                    color: Colors.grey[50],
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.all(40),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Title Section
-                          const Text(
+                          Text(
                             'State Electricity Board Information',
-                            style: TextStyle(
-                              fontSize: 32,
+                            style: GoogleFonts.inter(
+                              fontSize: 36,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                              color: Colors.grey[900],
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 16),
                           Text(
                             'Access comprehensive information about electricity boards, power generation, and distribution across different states',
-                            style: TextStyle(
-                              fontSize: 16,
+                            style: GoogleFonts.inter(
+                              fontSize: 18,
                               color: Colors.grey[600],
                               height: 1.5,
                             ),
@@ -358,9 +431,8 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                       border: Border.all(color: Colors.grey[200]!),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 1,
-                                          blurRadius: 8,
+                                          color: Colors.black.withOpacity(0.05),
+                                          blurRadius: 10,
                                           offset: const Offset(0, 4),
                                         ),
                                       ],
@@ -373,7 +445,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                           width: 80,
                                           height: 80,
                                           decoration: BoxDecoration(
-                                            color: Colors.blue[600],
+                                            color: Colors.blue[800],
                                             borderRadius: BorderRadius.circular(40),
                                           ),
                                           child: const Icon(
@@ -386,12 +458,12 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                         const SizedBox(height: 24),
                                         
                                         // Title
-                                        const Text(
+                                        Text(
                                           'Power Generation Flow',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black87,
+                                            color: Colors.grey[900],
                                           ),
                                         ),
                                         
@@ -400,7 +472,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                         // Description
                                         Text(
                                           'Explore the complete power supply chain from generation to distribution',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 16,
                                             color: Colors.grey[600],
                                             height: 1.5,
@@ -414,7 +486,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                           children: [
                                             Text(
                                               'Generator',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.blue[700],
@@ -425,7 +497,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               'Transmission',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.blue[700],
@@ -436,7 +508,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               'Distribution',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.blue[700],
@@ -446,15 +518,13 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                             Icon(Icons.arrow_forward, color: Colors.blue[700], size: 16),
                                             const SizedBox(width: 8),
                                             Text(
-                                              'Profile',
-                                              style: TextStyle(
+                                              'Consumer',
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.blue[700],
                                               ),
                                             ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.blue[700], size: 16),
                                           ],
                                         ),
                                       ],
@@ -482,9 +552,8 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                       border: Border.all(color: Colors.grey[200]!),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 1,
-                                          blurRadius: 8,
+                                          color: Colors.black.withOpacity(0.05),
+                                          blurRadius: 10,
                                           offset: const Offset(0, 4),
                                         ),
                                       ],
@@ -510,12 +579,12 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                         const SizedBox(height: 24),
                                         
                                         // Title
-                                        const Text(
+                                        Text(
                                           'State-Based Flow',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black87,
+                                            color: Colors.grey[900],
                                           ),
                                         ),
                                         
@@ -524,7 +593,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                         // Description
                                         Text(
                                           'Browse electricity information by state and explore mandal-level details',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 16,
                                             color: Colors.grey[600],
                                             height: 1.5,
@@ -538,7 +607,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                           children: [
                                             Text(
                                               'State',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.green[700],
@@ -549,7 +618,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               'Districts',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.green[700],
@@ -560,7 +629,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               'Mandal',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.green[700],
@@ -571,14 +640,12 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               'Village',
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.green[700],
                                               ),
                                             ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.green[700], size: 16),
                                           ],
                                         ),
                                       ],
@@ -598,6 +665,13 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: Colors.grey[200]!),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -606,16 +680,16 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                   children: [
                                     Icon(
                                       Icons.info_outline,
-                                      color: Colors.blue[600],
+                                      color: Colors.blue[800],
                                       size: 24,
                                     ),
                                     const SizedBox(width: 12),
-                                    const Text(
+                                    Text(
                                       'Quick Information',
-                                      style: TextStyle(
+                                      style: GoogleFonts.inter(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
+                                        color: Colors.grey[900],
                                       ),
                                     ),
                                   ],
@@ -629,7 +703,7 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                                         '28 + 8 UTs',
                                         Icons.location_city,
                                         Colors.blue[100]!,
-                                        Colors.blue[600]!,
+                                        Colors.blue[800]!,
                                       ),
                                     ),
                                     const SizedBox(width: 32),
@@ -661,8 +735,8 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -672,31 +746,32 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
 
   Widget _buildNavItem(IconData icon, String title, {bool isActive = false, String? badge}) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       child: ListTile(
         leading: Stack(
           children: [
             Icon(
               icon,
-              color: isActive ? Colors.blue[600] : Colors.grey[600],
+              color: isActive ? Colors.blue[800] : Colors.grey[600],
+              size: 24,
             ),
             if (badge != null)
               Positioned(
                 right: 0,
                 top: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.red[500],
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   constraints: const BoxConstraints(
-                    minWidth: 20,
-                    minHeight: 20,
+                    minWidth: 16,
+                    minHeight: 16,
                   ),
                   child: Text(
                     badge,
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       color: Colors.white,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -709,9 +784,9 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
         ),
         title: Text(
           title,
-          style: TextStyle(
-            color: isActive ? Colors.blue[600] : Colors.grey[600],
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+          style: GoogleFonts.inter(
+            color: isActive ? Colors.blue[800] : Colors.grey[700],
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
         ),
         tileColor: isActive ? Colors.blue[50] : null,
@@ -720,17 +795,18 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
         ),
         onTap: () {
           if (title == 'Home') {
-            Navigator.pushReplacement(
+            Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const D_HomeScreen()),
+              (route) => false,
             );
           } else if (title == 'Search Products') {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const D_SearchProductsScreen()),
             );
           } else if (title == 'Browse Brands') {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const D_BrowseBrandsScreen()),
             );
@@ -757,16 +833,16 @@ class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
           const SizedBox(height: 12),
           Text(
             value,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Colors.grey[900],
             ),
           ),
           const SizedBox(height: 4),
           Text(
             title,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 14,
               color: Colors.grey[600],
             ),

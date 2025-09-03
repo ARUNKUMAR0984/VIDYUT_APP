@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_products_screen.dart';
+import 'orders_screen.dart';
+import 'profile_screen.dart';
+import 'checkout_screen.dart';
+import 'notifications_screen.dart';
+import 'seller_dashboard_screen.dart';
+import 'b2b_leads_screen.dart';
 import 'login_screen.dart';
 import 'register_screen.dart';
 import 'user_profile_screen.dart';
@@ -18,6 +24,51 @@ class D_HomeScreen extends StatefulWidget {
 }
 
 class _D_HomeScreenState extends State<D_HomeScreen> {
+  bool _isSidebarVisible = true;
+  int _currentSlideIndex = 0;
+  late PageController _pageController;
+
+  // Slideshow images
+  final List<String> _slideshowImages = [
+    'assets/images/lights/philips_bulb_single_white_bg.jpeg',
+    'assets/images/circuit-breakers/electric_mcb_60w_single_white_bg.jpeg',
+    'assets/images/wires-and-cables/wires1.jpeg',
+    'assets/images/lights/tube_lights_60w_single_white_bg.jpeg',
+    'assets/images/circuit-breakers/circuit_breakers_single_white_bg.jpeg',
+    'assets/images/lights/event_lights_60w_single_white_bg.jpeg',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _startSlideshow();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _startSlideshow() {
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        if (_currentSlideIndex < _slideshowImages.length - 1) {
+          _currentSlideIndex++;
+        } else {
+          _currentSlideIndex = 0;
+        }
+        _pageController.animateToPage(
+          _currentSlideIndex,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        _startSlideshow();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,19 +115,16 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Center(
-                          child: Text(
-                            'V',
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: Icon(
+                            Icons.flash_on,
+                            color: Colors.white,
+                            size: 18,
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Vidyut Nidhi',
+                        'Vidyut',
                         style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -289,19 +337,16 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
-                  child: Text(
-                    'V',
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontSize: isMobile ? 18 : 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Icon(
+                    Icons.flash_on,
+                    color: Colors.white,
+                    size: isMobile ? 18 : 24,
                   ),
                 ),
               ),
               const SizedBox(width: 12),
               Text(
-                'Vidyut Nidhi',
+                'Vidyut',
                 style: GoogleFonts.inter(
                   fontSize: isMobile ? 18 : 24,
                   fontWeight: FontWeight.bold,
@@ -325,6 +370,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 _buildNavItem(Icons.favorite, 'Wishlist'),
                 _buildNavItem(Icons.shopping_cart, 'Shopping Cart'),
                 _buildNavItem(Icons.store, 'Sell'),
+                _buildNavItem(Icons.groups_2, 'B2B Leads'),
                 _buildNavItem(Icons.message, 'Messages'),
                 _buildNavItem(Icons.location_on, 'State Info'),
                 _buildNavItem(Icons.trending_up, 'Trending'),
@@ -753,7 +799,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 20),
                         Text(
                           'Produced by Madhu Powertech Private Limited',
                           style: GoogleFonts.inter(
@@ -916,21 +962,25 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
       itemCount: categories.length,
       itemBuilder: (context, index) {
         final category = categories[index];
-        return Container(
-          padding: EdgeInsets.all(ResponsiveHelper.getResponsivePadding(context, mobile: 12, tablet: 16, desktop: 20)),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
+        return GestureDetector(
+          onTap: () {
+            _navigateToCategoryProducts(category['name'] as String);
+          },
+          child: Container(
+            padding: EdgeInsets.all(ResponsiveHelper.getResponsivePadding(context, mobile: 12, tablet: 16, desktop: 20)),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
@@ -976,7 +1026,8 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               ),
             ],
           ),
-        );
+        ),
+      );
       },
     );
   }
@@ -1164,6 +1215,10 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
       {'number': '500+', 'label': 'Suppliers'},
       {'number': '50K+', 'label': 'Customers'},
       {'number': '99%', 'label': 'Satisfaction'},
+      {'number': '120+', 'label': 'Cities Covered'},
+      {'number': '24x7', 'label': 'Support'},
+      {'number': '1.2M+', 'label': 'Monthly Views'},
+      {'number': '4.8/5', 'label': 'Average Rating'},
     ];
 
     return Container(
@@ -1194,26 +1249,53 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
             itemCount: stats.length,
             itemBuilder: (context, index) {
               final stat = stats[index];
-              return Column(
-                children: [
-                  Text(
-                    stat['number'] as String,
-                    style: GoogleFonts.inter(
-                      fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 24, tablet: 28, desktop: 32),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.06),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                child: Column(
+                  children: [
+                    Text(
+                      stat['number'] as String,
+                      style: GoogleFonts.inter(
+                        fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 22, tablet: 26, desktop: 30),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    stat['label'] as String,
-                    style: GoogleFonts.inter(
-                      fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 12, tablet: 14, desktop: 16),
-                      color: Colors.white70,
+                    const SizedBox(height: 6),
+                    Text(
+                      stat['label'] as String,
+                      style: GoogleFonts.inter(
+                        fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 12, tablet: 14, desktop: 16),
+                        color: Colors.white70,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
+          ),
+          const SizedBox(height: 16),
+          // CTA row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.blue[800]),
+                child: Text('Explore Products', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+              ),
+              const SizedBox(width: 12),
+              OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(foregroundColor: Colors.white, side: const BorderSide(color: Colors.white70)),
+                child: Text('Become a Seller', style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: Colors.white)),
+              ),
+            ],
           ),
         ],
       ),
@@ -1348,40 +1430,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
         border: Border.all(color: Colors.grey[200]!),
       ),
       child: Column(
+
         children: [
-          // Premium Quality Badge
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.blue[600],
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.flash_on,
-                      color: Colors.white,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Premium Quality',
-                      style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
+
           // Product Grid
           Expanded(
             child: _buildProductGrid(),
@@ -1402,42 +1453,105 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
       ),
       child: Column(
         children: [
-          // Premium Quality Badge
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.blue[600],
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.flash_on,
-                      color: Colors.white,
-                      size: 18,
+
+          // Right Content - Product Image
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: 500,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  // Main Product Image
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                      'Premium Quality',
-                      style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Stack(
+                        children: [
+                          // Slideshow
+                          PageView.builder(
+                            controller: _pageController,
+                            onPageChanged: (index) {
+                              setState(() {
+                                _currentSlideIndex = index;
+                              });
+                            },
+                            itemCount: _slideshowImages.length,
+                            itemBuilder: (context, index) {
+                              return Image.asset(
+                                _slideshowImages[index],
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Colors.grey[100]!,
+                                          Colors.grey[200]!,
+                                        ],
+                                      ),
+                                    ),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.image_not_supported,
+                                        size: 60,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          // Slide indicators
+                          Positioned(
+                            bottom: 20,
+                            left: 0,
+                            right: 0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                _slideshowImages.length,
+                                (index) => Container(
+                                  width: 12,
+                                  height: 12,
+                                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: _currentSlideIndex == index
+                                        ? Colors.white
+                                        : Colors.white.withOpacity(0.5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  
+
+                ],
               ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          // Product Grid
-          Expanded(
-            child: _buildProductGrid(),
+            ),
           ),
         ],
       ),
@@ -1460,19 +1574,58 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: Image.asset(
-          'assets/Logo/homepage.png',
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              color: Colors.grey[200],
-              child: Icon(
-                Icons.image,
-                color: Colors.grey[400],
-                size: 80,
+        child: Stack(
+          children: [
+            // Slideshow
+            PageView.builder(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentSlideIndex = index;
+                });
+              },
+              itemCount: _slideshowImages.length,
+              itemBuilder: (context, index) {
+                return Image.asset(
+                  _slideshowImages[index],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[200],
+                      child: Icon(
+                        Icons.image,
+                        color: Colors.grey[400],
+                        size: 80,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            // Slide indicators
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  _slideshowImages.length,
+                  (index) => Container(
+                    width: 8,
+                    height: 8,
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _currentSlideIndex == index
+                          ? Colors.white
+                          : Colors.white.withOpacity(0.5),
+                    ),
+                  ),
+                ),
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
@@ -1500,10 +1653,40 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               context,
               MaterialPageRoute(builder: (context) => const D_SearchProductsScreen()),
             );
+          } else if (title == 'My Orders') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const OrdersScreen()),
+            );
+          } else if (title == 'User Profile' || title == 'Profile') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          } else if (title == 'Shopping Cart' || title == 'Checkout') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CheckoutScreen()),
+            );
+          } else if (title == 'Notifications') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const NotificationsScreen()),
+            );
           } else if (title == 'Browse Brands') {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const D_BrowseBrandsScreen()),
+            );
+          } else if (title == 'Sell') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SellerDashboardScreen()),
+            );
+          } else if (title == 'B2B Leads') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const B2BLeadsScreen()),
             );
           } else if (title == 'State Info') {
             Navigator.push(
@@ -1660,6 +1843,16 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           ],
         );
       },
+    );
+  }
+
+  void _navigateToCategoryProducts(String categoryName) {
+    // Navigate to search products screen with the selected category
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => D_SearchProductsScreen(selectedCategory: categoryName),
+      ),
     );
   }
 }

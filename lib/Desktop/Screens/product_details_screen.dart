@@ -693,7 +693,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ),
                                 const SizedBox(width: 12),
                                 Text(
-                                  '₹${(widget.product['price'] * 1.2).round()}',
+                                  '₹${(double.parse(widget.product['price'].replaceAll(RegExp(r'[^\d.]'), '')) * 1.2).round()}',
                                   style: GoogleFonts.inter(
                                     fontSize: 18,
                                     color: Colors.grey[500],
@@ -1584,4 +1584,3 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
     }
   }
 }
-

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vidyut_app/Desktop/Screens/home_screen.dart';
-import 'package:vidyut_app/Desktop/Screens/splash_screen.dart';
-import 'package:vidyut_app/Desktop/Screens/login_screen.dart';
-import 'package:vidyut_app/Mobile/Splash_Screen/Splash.dart';
+import 'Desktop/Screens/home_screen.dart';
+import 'Desktop/Screens/splash_screen.dart';
+import 'Desktop/Screens/login_screen.dart';
+import 'Mobile/Splash_Screen/Splash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,18 +17,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: GoogleFonts.inter().fontFamily,
         primarySwatch: Colors.blue,
-        primaryColor: Colors.blue[800],
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue[800]!,
-          primary: Colors.blue[800],
-          secondary: Colors.blue[600],
-          surface: Colors.white,
-          background: Colors.grey[50],
-        ),
         textTheme: GoogleFonts.interTextTheme(),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
