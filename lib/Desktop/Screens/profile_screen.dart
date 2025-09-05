@@ -8,7 +8,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+        title: Text('Profile', style: GoogleFonts.manrope(fontWeight: FontWeight.w600)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey[900],
         elevation: 0,
@@ -18,11 +18,11 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Saved Addresses', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600)),
+            Text('Saved Addresses', style: GoogleFonts.manrope(fontSize: 16, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             Card(child: ListTile(title: const Text('Home'), subtitle: const Text('221B Baker Street, Mumbai 400001'))),
             const SizedBox(height: 16),
-            Text('Preferences', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600)),
+            Text('Preferences', style: GoogleFonts.manrope(fontSize: 16, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             SwitchListTile(
               title: const Text('Receive offers'),
@@ -35,6 +35,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
 
 
 

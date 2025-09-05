@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 
 class M_SearchBar extends StatelessWidget {
   const M_SearchBar({super.key});
@@ -15,7 +16,7 @@ class M_SearchBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.search, color: Colors.grey, size: 22),
+          const Icon(Ionicons.search_outline, color: Colors.grey, size: 22),
           const SizedBox(width: 8),
           Expanded(
             child: TextField(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'product_details_screen.dart';
 import 'checkout_screen.dart';
@@ -116,7 +117,7 @@ class _CartScreenState extends State<CartScreen> {
               const SizedBox(width: 12),
               Text(
                 'Vidyut Nidhi',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF1976D2),
@@ -145,18 +146,18 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.favorite_border, color: Color(0xFF1976D2)),
+                icon: const Icon(Ionicons.heart_outline, color: Color(0xFF1976D2)),
               ),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.shopping_cart, color: Color(0xFF1976D2)),
+                icon: const Icon(Ionicons.cart_outline, color: Color(0xFF1976D2)),
               ),
               const SizedBox(width: 16),
               OutlinedButton(
                 onPressed: () {},
                 child: Text(
                   'Sign In',
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                  style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
                 ),
               ),
               const SizedBox(width: 12),
@@ -164,7 +165,7 @@ class _CartScreenState extends State<CartScreen> {
                 onPressed: () {},
                 child: Text(
                   'Register',
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                  style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -181,7 +182,7 @@ class _CartScreenState extends State<CartScreen> {
         onPressed: () {},
         child: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: const Color(0xFF424242),
             fontWeight: FontWeight.w500,
           ),
@@ -201,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               Text(
                 'Shopping Cart',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF212121),
@@ -216,7 +217,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 child: Text(
                   '${cartItems.length} items',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF1976D2),
@@ -232,7 +233,7 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: Text(
                   'Clear Cart',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: const Color(0xFFD32F2F),
                     fontWeight: FontWeight.w600,
                   ),
@@ -273,7 +274,7 @@ class _CartScreenState extends State<CartScreen> {
               borderRadius: BorderRadius.circular(60),
             ),
             child: const Icon(
-              Icons.shopping_cart_outlined,
+              Ionicons.cart_outline,
               size: 60,
               color: Color(0xFF1976D2),
             ),
@@ -281,7 +282,7 @@ class _CartScreenState extends State<CartScreen> {
           const SizedBox(height: 24),
           Text(
             'Your cart is empty',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF212121),
@@ -290,7 +291,7 @@ class _CartScreenState extends State<CartScreen> {
           const SizedBox(height: 8),
           Text(
             'Add some products to your cart to get started',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 16,
               color: const Color(0xFF424242),
             ),
@@ -302,7 +303,7 @@ class _CartScreenState extends State<CartScreen> {
             },
             child: Text(
               'Continue Shopping',
-              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -365,7 +366,7 @@ class _CartScreenState extends State<CartScreen> {
                 // Product Name and Seller
                 Text(
                         item['name'],
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                     color: const Color(0xFF212121),
@@ -374,7 +375,7 @@ class _CartScreenState extends State<CartScreen> {
                 const SizedBox(height: 4),
                 Text(
                   'by ${item['seller']}',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     fontSize: 14,
                     color: const Color(0xFF424242),
                   ),
@@ -387,7 +388,7 @@ class _CartScreenState extends State<CartScreen> {
                   children: [
                     Text(
                       item['price'],
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1976D2),
@@ -396,7 +397,7 @@ class _CartScreenState extends State<CartScreen> {
                       const SizedBox(width: 8),
                       Text(
                         item['originalPrice'],
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                           fontSize: 14,
                         color: Colors.grey.shade500,
                           decoration: TextDecoration.lineThrough,
@@ -411,7 +412,7 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                       child: Text(
                         item['discount'],
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFF4CAF50),
@@ -430,17 +431,17 @@ class _CartScreenState extends State<CartScreen> {
                     const SizedBox(width: 4),
                           Text(
                       'Delivery: ${item['deliveryTime']}',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 12,
                         color: const Color(0xFF424242),
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Icon(Icons.shopping_cart, color: Colors.grey.shade400, size: 14),
+                    Icon(Ionicons.cart_outline, color: Colors.grey.shade400, size: 14),
                     const SizedBox(width: 4),
                     Text(
                       'Min: ${item['minOrder']}',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 12,
                         color: const Color(0xFF424242),
                       ),
@@ -477,7 +478,7 @@ class _CartScreenState extends State<CartScreen> {
                       alignment: Alignment.center,
                       child: Text(
                         item['quantity'].toString(),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 16,
                                 fontWeight: FontWeight.w600,
                         ),
@@ -508,7 +509,7 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: Text(
                   'Remove',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: const Color(0xFFD32F2F),
                     fontWeight: FontWeight.w600,
                   ),
@@ -530,7 +531,7 @@ class _CartScreenState extends State<CartScreen> {
           // Order Summary Header
           Text(
             'Order Summary',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF212121),
@@ -562,14 +563,14 @@ class _CartScreenState extends State<CartScreen> {
                   children: [
                     Text(
                       'Items (${cartItems.length})',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                         color: const Color(0xFF424242),
                       ),
                     ),
                     Text(
                       '₹${_calculateSubtotal()}',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF212121),
@@ -586,14 +587,14 @@ class _CartScreenState extends State<CartScreen> {
                   children: [
                     Text(
                       'Discount',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                         color: const Color(0xFF424242),
                       ),
                     ),
                     Text(
                       '-₹${_calculateDiscount()}',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF4CAF50),
@@ -610,14 +611,14 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                     Text(
                       'Delivery',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                         color: const Color(0xFF424242),
                       ),
                     ),
                           Text(
                       'Free',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                               fontWeight: FontWeight.w600,
                         color: const Color(0xFF4CAF50),
@@ -634,7 +635,7 @@ class _CartScreenState extends State<CartScreen> {
                   children: [
                       Text(
                       'Total',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF212121),
@@ -642,7 +643,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     Text(
                       '₹${_calculateTotal()}',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF1976D2),
@@ -671,7 +672,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     child: Text(
                             'Proceed to Checkout',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontWeight: FontWeight.w600,
                               fontSize: 16,
                             ),
@@ -690,7 +691,7 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     child: Text(
                       'Continue Shopping',
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                      style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -717,7 +718,7 @@ class _CartScreenState extends State<CartScreen> {
                     const SizedBox(width: 8),
                     Text(
                       'Secure Checkout',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF1976D2),
@@ -728,7 +729,7 @@ class _CartScreenState extends State<CartScreen> {
                 const SizedBox(height: 8),
           Text(
                   'Your payment information is encrypted and secure. We never store your credit card details.',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     fontSize: 12,
                     color: const Color(0xFF424242),
                     height: 1.4,

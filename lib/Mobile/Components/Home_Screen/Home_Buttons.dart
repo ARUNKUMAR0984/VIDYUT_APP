@@ -21,7 +21,7 @@ class M_Home_Button extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Start Shopping",
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -45,7 +45,7 @@ class M_Home_Button extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Become a Seller",
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

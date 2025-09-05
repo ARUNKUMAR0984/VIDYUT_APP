@@ -8,7 +8,7 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+        title: Text('Notifications', style: GoogleFonts.manrope(fontWeight: FontWeight.w600)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.grey[900],
         elevation: 0,
@@ -24,6 +24,11 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
 
 
 

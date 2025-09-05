@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WishlistScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
       appBar: AppBar(
         title: Text(
           'Wishlist',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: const Color(0xFF1976D2),
@@ -38,7 +39,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                 borderRadius: BorderRadius.circular(60),
               ),
               child: const Icon(
-            Icons.favorite_border,
+            Ionicons.heart_outline,
                 size: 60,
                 color: Color(0xFF1976D2),
               ),
@@ -46,7 +47,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
           const SizedBox(height: 24),
           Text(
             'Your wishlist is empty',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 24,
               fontWeight: FontWeight.bold,
                 color: const Color(0xFF212121),
@@ -55,7 +56,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
             const SizedBox(height: 8),
             Text(
               'Save your favorite products for later',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontSize: 16,
                 color: const Color(0xFF424242),
               ),
@@ -67,7 +68,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               },
               child: Text(
                 'Start Shopping',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
               ),
             ),
           ],

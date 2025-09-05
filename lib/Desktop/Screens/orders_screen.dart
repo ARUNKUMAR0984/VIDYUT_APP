@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Models/buyer_models.dart';
 import 'home_screen.dart';
@@ -57,24 +58,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     child: Row(children: [
                       Container(width: 40, height: 40, decoration: BoxDecoration(color: Colors.blue[800], borderRadius: BorderRadius.circular(8)), child: const Center(child: Icon(Icons.flash_on, color: Colors.white))),
                       const SizedBox(width: 12),
-                      Text('Vidyut', style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue[800])),
+                      Text('Vidyut', style: GoogleFonts.manrope(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue[800])),
                     ]),
                   ),
                   const SizedBox(height: 8),
                   Expanded(
                     child: ListView(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
-                        _buildNavItem(Icons.favorite, 'Wishlist', badge: '2'),
-                        _buildNavItem(Icons.shopping_cart, 'Shopping Cart', badge: '3'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', isActive: true, badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages', badge: '5'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
+                        _buildNavItem(Ionicons.heart_outline, 'Wishlist', badge: '2'),
+                        _buildNavItem(Ionicons.cart_outline, 'Shopping Cart', badge: '3'),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', isActive: true, badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages', badge: '5'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         const Divider(height: 32),
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -94,11 +95,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   decoration: BoxDecoration(color: Colors.white, border: Border(bottom: BorderSide(color: Colors.grey[200]!))),
                   child: Row(children: [
                     IconButton(
-                      icon: Icon(_isSidebarVisible ? Icons.menu_open : Icons.menu, color: Colors.blue[800]),
+                      icon: Icon(_isSidebarVisible ? Ionicons.close_outline : Ionicons.menu_outline, color: Colors.blue[800]),
                       onPressed: () => setState(() => _isSidebarVisible = !_isSidebarVisible),
                     ),
                     const SizedBox(width: 8),
-                    Text('My Orders', style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey[900])),
+                    Text('My Orders', style: GoogleFonts.manrope(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey[900])),
                   ]),
                 ),
 
@@ -125,8 +126,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     itemBuilder: (context, index) {
                       final order = filteredOrders[index];
                       return ListTile(
-                        title: Text('Order #${order.id}', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-                        subtitle: Text('${order.seller} • ${order.createdAt.toLocal()}\nTotal: ₹${order.totalAmount.toStringAsFixed(0)}', style: GoogleFonts.inter(color: Colors.grey[700])),
+                        title: Text('Order #${order.id}', style: GoogleFonts.manrope(fontWeight: FontWeight.w600)),
+                        subtitle: Text('${order.seller} • ${order.createdAt.toLocal()}\nTotal: ₹${order.totalAmount.toStringAsFixed(0)}', style: GoogleFonts.manrope(color: Colors.grey[700])),
                         isThreeLine: true,
                         trailing: _buildStatusChip(order.status),
                         onTap: () {},
@@ -147,7 +148,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       leading: Icon(icon, color: isActive ? Colors.blue[800] : Colors.grey[600], size: 20),
       title: Text(
         title,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.manrope(
           color: isActive ? Colors.blue[800] : Colors.grey[700],
           fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
         ),
@@ -156,7 +157,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           ? Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(color: Colors.red[500], borderRadius: BorderRadius.circular(10)),
-              child: Text(badge, style: GoogleFonts.inter(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+              child: Text(badge, style: GoogleFonts.manrope(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
             )
           : null,
       onTap: () {
@@ -188,7 +189,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           );
         } else if (title == 'Messages') {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Messages coming soon', style: GoogleFonts.inter())),
+            SnackBar(content: Text('Messages coming soon', style: GoogleFonts.manrope())),
           );
         } else if (title == 'State Info') {
           Navigator.push(
@@ -203,7 +204,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Widget _buildDropdown(String label, String value, List<String> options, ValueChanged<String> onChanged) {
     return Row(
       children: [
-        Text('$label: ', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+        Text('$label: ', style: GoogleFonts.manrope(fontWeight: FontWeight.w600)),
         const SizedBox(width: 6),
         DropdownButton<String>(
           value: value,
@@ -235,7 +236,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         text = 'Completed';
         break;
     }
-    return Chip(label: Text(text, style: GoogleFonts.inter(color: Colors.white)), backgroundColor: color);
+    return Chip(label: Text(text, style: GoogleFonts.manrope(color: Colors.white)), backgroundColor: color);
   }
 
   List<String> _monthOptions() {

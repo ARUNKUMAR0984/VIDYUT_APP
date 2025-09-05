@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'home_screen.dart';
-import 'search_products_screen.dart';
-import 'browse_brands_screen.dart';
-import 'power_generator_screen.dart';
-import 'select_state_screen.dart';
-import 'login_screen.dart';
-import 'register_screen.dart';
-import 'cart_screen.dart';
-import 'wishlist_screen.dart';
+import '../Components/responsive_helper.dart';
+import '../Components/unified_navigation.dart';
 
 class D_StateInfoScreen extends StatefulWidget {
   const D_StateInfoScreen({super.key});
@@ -19,835 +13,380 @@ class D_StateInfoScreen extends StatefulWidget {
 
 class _D_StateInfoScreenState extends State<D_StateInfoScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _sidebarSearchController = TextEditingController();
-  bool _isSidebarVisible = true;
+  String _selectedState = 'All States';
 
   @override
   void dispose() {
     _searchController.dispose();
-    _sidebarSearchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Row(
+      backgroundColor: const Color(0xFFF8FAFC),
+      body: Column(
         children: [
-          // Left Sidebar Navigation
-          if (_isSidebarVisible)
-            Container(
-              width: 280,
-              color: Colors.white,
+          // Unified Navigation
+          UnifiedNavigation(
+            currentPage: 'state',
+            isMobile: ResponsiveHelper.isMobile(context),
+          ),
+          
+          // Content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(ResponsiveHelper.getResponsivePadding(context, mobile: 16, tablet: 20, desktop: 24)),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logo Section
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.blue[800],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.flash_on,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          'Vidyut',
-                          style: GoogleFonts.inter(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue[800],
-                          ),
-                        ),
-                      ],
+                  Text(
+                    'Power Infrastructure',
+                    style: GoogleFonts.manrope(
+                      fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 24, tablet: 28, desktop: 32),
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1E293B),
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Monitor power generation, transmission, and distribution across states',
+                    style: GoogleFonts.manrope(
+                      fontSize: 16,
+                      color: const Color(0xFF64748B),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Flow Cards
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildFlowCard(
+                          'Power Generation Flow',
+                          'Explore the complete power supply chain from generation to distribution',
+                          'Generator → Transmission → Distribution → Profile',
+                          Icons.power_settings_new,
+                          Colors.blue,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _buildFlowCard(
+                          'State-Based Flow',
+                          'Browse electricity information by state and explore mandal-level details',
+                          'State → Districts → Mandals → Details',
+                          Icons.map_outlined,
+                          Colors.green,
+                        ),
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 32),
                   
                   // Search Bar
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: TextField(
-                      controller: _sidebarSearchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
-                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                        suffixIcon: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            '⌘K',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.grey[500],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[50],
-                      ),
-                    ),
-                  ),
-                  
-                  const SizedBox(height: 30),
-                  
-                  // Navigation Links
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
-                        _buildNavItem(Icons.business, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info', isActive: true),
-                        _buildNavItem(Icons.trending_up, 'Trending'),
-                        const Divider(height: 32),
-                        _buildNavItem(Icons.settings, 'Settings'),
-                        _buildNavItem(Icons.help, 'Help'),
-                      ],
-                    ),
-                  ),
-                  
-                  // User Profile
                   Container(
-                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(color: Colors.grey[300]!),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFFF1F5F9),
+                        width: 1,
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.blue[100],
-                          child: Text(
-                            'JD',
-                            style: GoogleFonts.inter(
-                              color: Colors.blue[800],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'John Doe',
-                                style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Text(
-                                'john.doe@example.com',
-                                style: GoogleFonts.inter(
-                                  color: Colors.grey[600],
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF1E293B).withOpacity(0.04),
+                          spreadRadius: 0,
+                          blurRadius: 20,
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search power infrastructure by state...',
+                        hintStyle: GoogleFonts.manrope(color: const Color(0xFF94A3B8)),
+                        prefixIcon: const Icon(Ionicons.search_outline, color: Color(0xFF64748B)),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      ),
+                      onChanged: (value) => setState(() {}),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // States Grid
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: ResponsiveHelper.getResponsiveColumns(context, mobile: 2, tablet: 3, desktop: 4),
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1.2,
+                    ),
+                    itemCount: states.length,
+                    itemBuilder: (context, index) {
+                      final state = states[index];
+                      return _buildStateCard(state);
+                    },
                   ),
                 ],
               ),
             ),
-          
-          // Main Content
-          Expanded(
-            child: Column(
-              children: [
-                // Top Header
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey[200]!),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      // Menu Toggle Button
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _isSidebarVisible = !_isSidebarVisible;
-                          });
-                        },
-                        icon: Icon(
-                          _isSidebarVisible ? Icons.menu_open : Icons.menu,
-                          color: Colors.blue[800],
-                          size: 24,
-                        ),
-                      ),
-                      
-                      const SizedBox(width: 16),
-                      
-                      // Logo
-                      Row(
-                        children: [
-                          Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: Colors.blue[800],
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: const Icon(
-                              Icons.flash_on,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Vidyut',
-                            style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue[800],
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(width: 40),
-                      
-                      // Search Bar
-                      Expanded(
-                        child: Container(
-                          constraints: const BoxConstraints(maxWidth: 600),
-                          child: TextField(
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                              hintText: 'Search state information...',
-                              hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
-                              prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                              suffixIcon: Container(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  '⌘K',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    color: Colors.grey[500],
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(color: Colors.grey[300]!),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
-                              ),
-                              filled: true,
-                              fillColor: Colors.grey[50],
-                            ),
-                          ),
-                        ),
-                      ),
-                      
-                      const SizedBox(width: 20),
-                      
-                      // Right Side Actions
-                      Row(
-                        children: [
-                          // Location
-                          Row(
-                            children: [
-                              const Icon(Icons.location_on, color: Colors.grey, size: 20),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Deliver to: Set location',
-                                style: GoogleFonts.inter(
-                                  color: Colors.grey[600],
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          
-                          const SizedBox(width: 20),
-                          
-                          // Notifications
-                          IconButton(
-                            icon: const Icon(Icons.notifications_outlined, color: Colors.grey),
-                            onPressed: () {},
-                          ),
-                          
-                          // Wishlist
-                          IconButton(
-                            icon: const Icon(Icons.favorite_border, color: Colors.grey),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const WishlistScreen()),
-                              );
-                            },
-                          ),
-                          
-                          const SizedBox(width: 16),
-                          
-                          // Sign In
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                              );
-                            },
-                            child: Text(
-                              'Sign In',
-                              style: GoogleFonts.inter(
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          
-                          const SizedBox(width: 12),
-                          
-                          // Sign Up Button
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue[800],
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: Text(
-                              'Sign Up',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          
-                          const SizedBox(width: 16),
-                          
-                          // User Avatar
-                          CircleAvatar(
-                            radius: 18,
-                            backgroundColor: Colors.blue[100],
-                            child: Text(
-                              'JD',
-                              style: GoogleFonts.inter(
-                                color: Colors.blue[800],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Main Content Area
-                Expanded(
-                  child: Container(
-                    color: Colors.grey[50],
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Title Section
-                          Text(
-                            'State Electricity Board Information',
-                            style: GoogleFonts.inter(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[900],
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Access comprehensive information about electricity boards, power generation, and distribution across different states',
-                            style: GoogleFonts.inter(
-                              fontSize: 18,
-                              color: Colors.grey[600],
-                              height: 1.5,
-                            ),
-                          ),
-                          
-                          const SizedBox(height: 60),
-                          
-                          // Two Main Cards
-                          Row(
-                            children: [
-                              // Left Card: Power Generation Flow
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const D_PowerGeneratorScreen()),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(32),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(color: Colors.grey[200]!),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.05),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        // Icon Circle
-                                        Container(
-                                          width: 80,
-                                          height: 80,
-                                          decoration: BoxDecoration(
-                                            color: Colors.blue[800],
-                                            borderRadius: BorderRadius.circular(40),
-                                          ),
-                                          child: const Icon(
-                                            Icons.power_settings_new,
-                                            color: Colors.white,
-                                            size: 40,
-                                          ),
-                                        ),
-                                        
-                                        const SizedBox(height: 24),
-                                        
-                                        // Title
-                                        Text(
-                                          'Power Generation Flow',
-                                          style: GoogleFonts.inter(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[900],
-                                          ),
-                                        ),
-                                        
-                                        const SizedBox(height: 16),
-                                        
-                                        // Description
-                                        Text(
-                                          'Explore the complete power supply chain from generation to distribution',
-                                          style: GoogleFonts.inter(
-                                            fontSize: 16,
-                                            color: Colors.grey[600],
-                                            height: 1.5,
-                                          ),
-                                        ),
-                                        
-                                        const SizedBox(height: 24),
-                                        
-                                        // Flow Path
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'Generator',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.blue[700],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.blue[700], size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Transmission',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.blue[700],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.blue[700], size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Distribution',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.blue[700],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.blue[700], size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Consumer',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.blue[700],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              
-                              const SizedBox(width: 32),
-                              
-                              // Right Card: State-Based Flow
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const D_SelectStateScreen()),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(32),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(color: Colors.grey[200]!),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.05),
-                                          blurRadius: 10,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        // Icon Circle
-                                        Container(
-                                          width: 80,
-                                          height: 80,
-                                          decoration: BoxDecoration(
-                                            color: Colors.green[600],
-                                            borderRadius: BorderRadius.circular(40),
-                                          ),
-                                          child: const Icon(
-                                            Icons.map_outlined,
-                                            color: Colors.white,
-                                            size: 40,
-                                          ),
-                                        ),
-                                        
-                                        const SizedBox(height: 24),
-                                        
-                                        // Title
-                                        Text(
-                                          'State-Based Flow',
-                                          style: GoogleFonts.inter(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[900],
-                                          ),
-                                        ),
-                                        
-                                        const SizedBox(height: 16),
-                                        
-                                        // Description
-                                        Text(
-                                          'Browse electricity information by state and explore mandal-level details',
-                                          style: GoogleFonts.inter(
-                                            fontSize: 16,
-                                            color: Colors.grey[600],
-                                            height: 1.5,
-                                          ),
-                                        ),
-                                        
-                                        const SizedBox(height: 24),
-                                        
-                                        // Flow Path
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'State',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.green[700],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.green[700], size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Districts',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.green[700],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.green[700], size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Mandal',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.green[700],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Icon(Icons.arrow_forward, color: Colors.green[700], size: 16),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Village',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.green[700],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          
-                          const SizedBox(height: 60),
-                          
-                          // Additional Information Section
-                          Container(
-                            padding: const EdgeInsets.all(32),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: Colors.grey[200]!),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.info_outline,
-                                      color: Colors.blue[800],
-                                      size: 24,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Text(
-                                      'Quick Information',
-                                      style: GoogleFonts.inter(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey[900],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: _buildInfoItem(
-                                        'Total States',
-                                        '28 + 8 UTs',
-                                        Icons.location_city,
-                                        Colors.blue[100]!,
-                                        Colors.blue[800]!,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 32),
-                                    Expanded(
-                                      child: _buildInfoItem(
-                                        'Power Plants',
-                                        '1,200+',
-                                        Icons.power,
-                                        Colors.green[100]!,
-                                        Colors.green[600]!,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 32),
-                                    Expanded(
-                                      child: _buildInfoItem(
-                                        'Distribution Companies',
-                                        '60+',
-                                        Icons.business,
-                                        Colors.orange[100]!,
-                                        Colors.orange[600]!,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String title, {bool isActive = false, String? badge}) {
+  Widget _buildStateCard(Map<String, dynamic> state) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
-        leading: Stack(
-          children: [
-            Icon(
-              icon,
-              color: isActive ? Colors.blue[800] : Colors.grey[600],
-              size: 24,
-            ),
-            if (badge != null)
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.red[500],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Text(
-                    badge,
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-          ],
-        ),
-        title: Text(
-          title,
-          style: GoogleFonts.inter(
-            color: isActive ? Colors.blue[800] : Colors.grey[700],
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-          ),
-        ),
-        tileColor: isActive ? Colors.blue[50] : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        onTap: () {
-          if (title == 'Home') {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const D_HomeScreen()),
-              (route) => false,
-            );
-          } else if (title == 'Search Products') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const D_SearchProductsScreen()),
-            );
-          } else if (title == 'Browse Brands') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const D_BrowseBrandsScreen()),
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  Widget _buildInfoItem(String title, String value, IconData icon, Color bgColor, Color iconColor) {
-    return Container(
-      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: const Color(0xFFF1F5F9),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF1E293B).withOpacity(0.04),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: iconColor,
-            size: 32,
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: const Color(0xFF3B82F6).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Ionicons.location_outline,
+              color: const Color(0xFF3B82F6),
+              size: 30,
+            ),
           ),
           const SizedBox(height: 12),
           Text(
-            value,
-            style: GoogleFonts.inter(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[900],
+            state['name'],
+            style: GoogleFonts.manrope(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF1E293B),
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
           Text(
-            title,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              color: Colors.grey[600],
+            '${state['districts']} districts',
+            style: GoogleFonts.manrope(
+              fontSize: 12,
+              color: const Color(0xFF64748B),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFF10B981).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              state['status'],
+              style: GoogleFonts.manrope(
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF10B981),
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Sample states data
+  final List<Map<String, dynamic>> states = [
+    {
+      'name': 'Maharashtra',
+      'districts': 36,
+      'status': 'Active',
+      'capital': 'Mumbai',
+      'population': '11.4 Cr',
+    },
+    {
+      'name': 'Delhi',
+      'districts': 11,
+      'status': 'Active',
+      'capital': 'New Delhi',
+      'population': '2.0 Cr',
+    },
+    {
+      'name': 'Karnataka',
+      'districts': 31,
+      'status': 'Active',
+      'capital': 'Bangalore',
+      'population': '6.7 Cr',
+    },
+    {
+      'name': 'Tamil Nadu',
+      'districts': 38,
+      'status': 'Active',
+      'capital': 'Chennai',
+      'population': '7.7 Cr',
+    },
+    {
+      'name': 'Gujarat',
+      'districts': 33,
+      'status': 'Active',
+      'capital': 'Gandhinagar',
+      'population': '6.3 Cr',
+    },
+    {
+      'name': 'Rajasthan',
+      'districts': 33,
+      'status': 'Active',
+      'capital': 'Jaipur',
+      'population': '7.3 Cr',
+    },
+    {
+      'name': 'Uttar Pradesh',
+      'districts': 75,
+      'status': 'Active',
+      'capital': 'Lucknow',
+      'population': '20.4 Cr',
+    },
+    {
+      'name': 'Punjab',
+      'districts': 23,
+      'status': 'Active',
+      'capital': 'Chandigarh',
+      'population': '2.8 Cr',
+    },
+    {
+      'name': 'Haryana',
+      'districts': 22,
+      'status': 'Active',
+      'capital': 'Chandigarh',
+      'population': '2.5 Cr',
+    },
+    {
+      'name': 'Kerala',
+      'districts': 14,
+      'status': 'Active',
+      'capital': 'Thiruvananthapuram',
+      'population': '3.5 Cr',
+    },
+    {
+      'name': 'Telangana',
+      'districts': 33,
+      'status': 'Active',
+      'capital': 'Hyderabad',
+      'population': '3.5 Cr',
+    },
+    {
+      'name': 'Andhra Pradesh',
+      'districts': 26,
+      'status': 'Active',
+      'capital': 'Amaravati',
+      'population': '4.9 Cr',
+    },
+  ];
+
+  Widget _buildFlowCard(String title, String description, String flowPath, IconData icon, Color color) {
+    return GestureDetector(
+      onTap: () {
+        // Add navigation logic here
+        print('Tapped on $title');
+      },
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon at the top center
+            Center(
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 30,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Title
+            Text(
+              title,
+              style: GoogleFonts.manrope(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF1E293B),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            // Description
+            Text(
+              description,
+              style: GoogleFonts.manrope(
+                fontSize: 14,
+                color: const Color(0xFF64748B),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            // Flow path with arrow
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  flowPath,
+                  style: GoogleFonts.manrope(
+                    fontSize: 14,
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: color,
+                  size: 16,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

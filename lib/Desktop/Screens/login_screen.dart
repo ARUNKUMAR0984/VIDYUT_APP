@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         title: Text(
           'Sign In',
-          style: GoogleFonts.inter(color: Colors.grey[900], fontWeight: FontWeight.bold),
+          style: GoogleFonts.manrope(color: Colors.grey[900], fontWeight: FontWeight.bold),
         ),
       ),
       body: Row(
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Center(
                       child: Text(
                         'V',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: Colors.blue[800],
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 24),
                   Text(
                     'Vidyut Nidhi',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       color: Colors.white,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,

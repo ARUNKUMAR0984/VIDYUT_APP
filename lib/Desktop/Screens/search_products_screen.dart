@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../Components/responsive_helper.dart';
+import '../Components/unified_navigation.dart';
 import 'home_screen.dart';
-import 'login_screen.dart';
-import 'register_screen.dart';
 import 'cart_screen.dart';
 import 'wishlist_screen.dart';
 import 'product_details_screen.dart';
 import 'orders_screen.dart';
 import 'seller_dashboard_screen.dart';
-import 'b2b_leads_screen.dart';
 import 'state_info_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/link.dart';
+import 'package:ionicons/ionicons.dart';
 
 class D_SearchProductsScreen extends StatefulWidget {
   final String? selectedCategory;
+  final String? selectedBrand;
   
-  const D_SearchProductsScreen({super.key, this.selectedCategory});
+  const D_SearchProductsScreen({super.key, this.selectedCategory, this.selectedBrand});
 
   @override
   State<D_SearchProductsScreen> createState() => _D_SearchProductsScreenState();
@@ -23,6 +26,7 @@ class D_SearchProductsScreen extends StatefulWidget {
 class _D_SearchProductsScreenState extends State<D_SearchProductsScreen> {
   final TextEditingController _searchController = TextEditingController();
   late String _selectedCategory;
+  late String _selectedBrand;
   String _selectedSortBy = 'Best match';
   bool _isGridView = true;
   bool _showFilters = false;
@@ -39,6 +43,72 @@ class _D_SearchProductsScreenState extends State<D_SearchProductsScreen> {
   void initState() {
     super.initState();
     _selectedCategory = widget.selectedCategory ?? 'All Categories';
+    _selectedBrand = widget.selectedBrand ?? 'All Brands';
+  }
+
+  final Map<String, String> _sellerPhoneMap = const {
+    'ElectroMart': '+919999000001',
+    'Power Solutions': '+919999000002',
+    'Cable World': '+919999000003',
+    'Electrical Store': '+919999000004',
+    'Fan Hub': '+919999000005',
+    'Wire Solutions': '+919999000006',
+    'Bright Lights Co': '+919999000007',
+    'Starlite': '+919999000008',
+    'Breaker Mart': '+919999000009',
+    'Conduit Depot': '+919999000010',
+    'Tool House': '+919999000011',
+    'Motor Sales': '+919999000012',
+    'Panel Point': '+919999000013',
+    'SecureWear': '+919999000014',
+    'Solar Shop': '+919999000015',
+  };
+
+  final Map<String, String> _sellerWebsiteMap = const {
+    'ElectroMart': 'https://electromart.com/',
+    'Power Solutions': 'https://www.powersolutions.co.in/',
+    'Cable World': 'https://example.com/cable-world',
+    'Electrical Store': 'https://example.com/electrical-store',
+    'Fan Hub': 'https://example.com/fan-hub',
+    'Wire Solutions': 'https://example.com/wire-solutions',
+    'Bright Lights Co': 'https://example.com/bright-lights',
+    'Starlite': 'https://example.com/starlite',
+    'Breaker Mart': 'https://example.com/breaker-mart',
+    'Conduit Depot': 'https://example.com/conduit-depot',
+    'Tool House': 'https://example.com/tool-house',
+    'Motor Sales': 'https://example.com/motor-sales',
+    'Panel Point': 'https://example.com/panel-point',
+    'SecureWear': 'https://example.com/securewear',
+    'Solar Shop': 'https://example.com/solar-shop',
+  };
+
+  String _imagePathOf(Map<String, dynamic> product) {
+    final dynamic path = product['image'];
+    if (path is String && path.isNotEmpty) return path;
+    return 'assets/images/product-1.jpg';
+  }
+
+  void _viewProduct(Map<String, dynamic> product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductDetailsScreen(product: product, allProducts: products),
+      ),
+    );
+  }
+
+  void _contactSeller(Map<String, dynamic> product) {
+    final String seller = (product['seller'] ?? '').toString();
+    final String phone = (product['phone'] ?? _sellerPhoneMap[seller] ?? '+911234567890').toString();
+    launchUrl(Uri.parse('tel:$phone'));
+  }
+
+  void _whatsappSeller(Map<String, dynamic> product) {
+    final String seller = (product['seller'] ?? '').toString();
+    final String phone = (product['phone'] ?? _sellerPhoneMap[seller] ?? '+911234567890').toString();
+    final String message = Uri.encodeComponent('Hi, I am interested in ${product['name']}');
+    final Uri wa = Uri.parse('https://wa.me/${phone.replaceAll('+', '')}?text=$message');
+    launchUrl(wa, mode: LaunchMode.externalApplication);
   }
 
   List<Map<String, dynamic>> get filteredProducts {
@@ -59,6 +129,11 @@ class _D_SearchProductsScreenState extends State<D_SearchProductsScreen> {
     // Category
     if (_selectedCategory != 'All Categories') {
       results = results.where((p) => p['category'] == _selectedCategory).toList();
+    }
+
+    // Brand (seller)
+    if (_selectedBrand != 'All Brands') {
+      results = results.where((p) => p['seller'] == _selectedBrand).toList();
     }
 
     // Type toggle (Products vs Materials)
@@ -97,715 +172,119 @@ class _D_SearchProductsScreenState extends State<D_SearchProductsScreen> {
         break;
       case 'Best match':
       default:
-        // Keep default order; could be enhanced with relevance scoring
+        // Keep original order
         break;
     }
 
     return results;
   }
 
-  // Sample products data
-  final List<Map<String, dynamic>> products = [
-    // Wires & Cables
-    {
-      'id': '1',
-      'name': 'Copper Wire 2.5 sq.mm',
-      'price': '₹2,500',
-      'priceValue': 2500,
-      'originalPrice': '₹3,200',
-      'discount': '22%',
-      'image': 'assets/images/wires-and-cables/wires1.jpeg',
-      'seller': 'ElectroMax Industries',
-      'rating': 4.0,
-      'reviews': 128,
-      'category': 'Wires & Cables',
-      'sellerType': 'Pro',
-      'state': 'Maharashtra',
-      'type': 'Product',
-      'stock': 50,
-      'description': 'High-quality copper wire for electrical installations',
-    },
-    {
-      'id': '2',
-      'name': 'PVC Cable 4 sq.mm',
-      'price': '₹3,800',
-      'priceValue': 3800,
-      'originalPrice': '₹4,500',
-      'discount': '16%',
-      'image': 'assets/images/wires-and-cables/wires2.jpeg',
-      'seller': 'CableTech Solutions',
-      'rating': 4.2,
-      'reviews': 95,
-      'category': 'Wires & Cables',
-      'sellerType': 'Plus',
-      'state': 'Gujarat',
-      'type': 'Material',
-      'stock': 30,
-      'description': 'Flexible PVC insulated cable for indoor wiring',
-    },
-    // Switches
-    {
-      'id': '3',
-      'name': 'MCB 32A Single Pole',
-      'price': '₹180',
-      'priceValue': 180,
-      'originalPrice': '₹250',
-      'discount': '28%',
-      'image': 'assets/images/circuit-breakers/electric_mcb_60w_single_white_bg.jpeg',
-      'seller': 'CircuitPro Ltd',
-      'rating': 4.0,
-      'reviews': 156,
-      'category': 'Switches',
-      'sellerType': 'Free',
-      'state': 'Karnataka',
-      'type': 'Product',
-      'stock': 75,
-      'description': 'Reliable circuit breaker for electrical protection',
-    },
-    {
-      'id': '4',
-      'name': 'Toggle Switch 16A',
-      'price': '₹120',
-      'priceValue': 120,
-      'originalPrice': '₹150',
-      'discount': '20%',
-      'image': 'assets/images/switches/electric_switch_white_bg.jpeg',
-      'seller': 'SwitchMaster',
-      'rating': 4.3,
-      'reviews': 89,
-      'category': 'Switches',
-      'sellerType': 'Plus',
-      'state': 'Tamil Nadu',
-      'type': 'Material',
-      'stock': 120,
-      'description': 'High-quality toggle switch for residential use',
-    },
-    // Lights
-    {
-      'id': '5',
-      'name': 'LED Panel Light 18W',
-      'price': '₹450',
-      'priceValue': 450,
-      'originalPrice': '₹600',
-      'discount': '25%',
-      'image': 'assets/images/lights/tube_lights_60w_single_white_bg.jpeg',
-      'seller': 'LightTech Solutions',
-      'rating': 4.0,
-      'reviews': 89,
-      'category': 'Lights',
-      'sellerType': 'Pro',
-      'state': 'Delhi',
-      'type': 'Product',
-      'stock': 200,
-      'description': 'Energy-efficient LED panel light for commercial use',
-    },
-    {
-      'id': '6',
-      'name': 'LED Bulb 9W',
-      'price': '₹299',
-      'priceValue': 299,
-      'originalPrice': '₹399',
-      'discount': '25%',
-      'image': 'assets/images/lights/philips_bulb_single_white_bg.jpeg',
-      'seller': 'Philips Lighting',
-      'rating': 4.5,
-      'reviews': 234,
-      'category': 'Lights',
-      'sellerType': 'Pro',
-      'state': 'Maharashtra',
-      'type': 'Product',
-      'stock': 150,
-      'description': 'Energy-saving LED bulb with warm white light',
-    },
-    // Motors
-    {
-      'id': '7',
-      'name': 'Industrial Motor 5HP',
-      'price': '₹15,000',
-      'priceValue': 15000,
-      'originalPrice': '₹18,500',
-      'discount': '19%',
-      'image': 'assets/images/motors/electric_motors_with_white_bg.jpeg',
-      'seller': 'MotorWorks India',
-      'rating': 4.5,
-      'reviews': 67,
-      'category': 'Motors',
-      'sellerType': 'Pro',
-      'state': 'Gujarat',
-      'type': 'Product',
-      'stock': 12,
-      'description': 'Heavy-duty industrial motor for commercial applications',
-    },
-    {
-      'id': '8',
-      'name': 'Ceiling Fan Motor',
-      'price': '₹1,200',
-      'priceValue': 1200,
-      'originalPrice': '₹1,500',
-      'discount': '20%',
-      'image': 'assets/images/motors/electric_motors_with_white_bg (1).jpeg',
-      'seller': 'FanTech Industries',
-      'rating': 4.2,
-      'reviews': 156,
-      'category': 'Motors',
-      'sellerType': 'Free',
-      'state': 'Punjab',
-      'type': 'Material',
-      'stock': 45,
-      'description': 'High-efficiency ceiling fan motor',
-    },
-    // Panels
-    {
-      'id': '9',
-      'name': 'Distribution Panel 100A',
-      'price': '₹8,500',
-      'priceValue': 8500,
-      'originalPrice': '₹10,000',
-      'discount': '15%',
-      'image': 'assets/images/circuit-breakers/circuit_breakers_single_white_bg.jpeg',
-      'seller': 'Panel Systems Ltd',
-      'rating': 4.8,
-      'reviews': 78,
-      'category': 'Panels',
-      'sellerType': 'Plus',
-      'state': 'Rajasthan',
-      'type': 'Product',
-      'stock': 8,
-      'description': 'Industrial distribution panel with advanced protection',
-    },
-    {
-      'id': '10',
-      'name': 'Control Panel 50A',
-      'price': '₹4,200',
-      'priceValue': 4200,
-      'originalPrice': '₹5,000',
-      'discount': '16%',
-      'image': 'assets/images/circuit-breakers/circuit_breakers_single_white_bg (2).jpeg',
-      'seller': 'ControlTech',
-      'rating': 4.4,
-      'reviews': 92,
-      'category': 'Panels',
-      'sellerType': 'Free',
-      'state': 'Uttar Pradesh',
-      'type': 'Material',
-      'stock': 15,
-      'description': 'Compact control panel for automation systems',
-    },
-    // Tools
-    {
-      'id': '11',
-      'name': 'Digital Multimeter',
-      'price': '₹1,200',
-      'priceValue': 1200,
-      'originalPrice': '₹1,800',
-      'discount': '33%',
-      'image': 'assets/images/tools/multimeter.jpeg',
-      'seller': 'ToolMaster Pro',
-      'rating': 4.3,
-      'reviews': 189,
-      'category': 'Tools',
-      'sellerType': 'Pro',
-      'state': 'Delhi',
-      'type': 'Product',
-      'stock': 45,
-      'description': 'Professional digital multimeter for electrical testing',
-    },
-    {
-      'id': '12',
-      'name': 'Wire Stripper Set',
-      'price': '₹450',
-      'priceValue': 450,
-      'originalPrice': '₹600',
-      'discount': '25%',
-      'image': 'assets/images/tools/wire_stripper.jpeg',
-      'seller': 'ToolCraft',
-      'rating': 4.1,
-      'reviews': 134,
-      'category': 'Tools',
-      'sellerType': 'Plus',
-      'state': 'Maharashtra',
-      'type': 'Material',
-      'stock': 80,
-      'description': 'Professional wire stripping tool set',
-    },
-    // Additional products
-    {
-      'id': '13',
-      'name': 'Industrial Switchgear Set',
-      'price': '₹3,200',
-      'priceValue': 3200,
-      'originalPrice': '₹3,800',
-      'discount': '16%',
-      'image': 'assets/images/switches/industrial_switches_with_white_bg.jpeg',
-      'seller': 'SwitchMaster',
-      'rating': 4.2,
-      'reviews': 72,
-      'category': 'Switches',
-      'sellerType': 'Pro',
-      'state': 'Gujarat',
-      'type': 'Product',
-      'stock': 60,
-      'description': 'Comprehensive switchgear kit for industrial panels',
-    },
-    {
-      'id': '14',
-      'name': 'Aluminium Cable 10 sq.mm',
-      'price': '₹5,900',
-      'priceValue': 5900,
-      'originalPrice': '₹6,500',
-      'discount': '9%',
-      'image': 'assets/images/wires-and-cables/wires4.jpeg',
-      'seller': 'CableTech Solutions',
-      'rating': 4.0,
-      'reviews': 51,
-      'category': 'Wires & Cables',
-      'sellerType': 'Free',
-      'state': 'Tamil Nadu',
-      'type': 'Material',
-      'stock': 25,
-      'description': 'Durable aluminium cable for commercial installations',
-    },
-    {
-      'id': '15',
-      'name': 'Event Light 60W Pack of 6',
-      'price': '₹1,950',
-      'priceValue': 1950,
-      'originalPrice': '₹2,220',
-      'discount': '12%',
-      'image': 'assets/images/lights/event_lights_60w_single_white_bg.jpeg',
-      'seller': 'LightTech Solutions',
-      'rating': 4.3,
-      'reviews': 142,
-      'category': 'Lights',
-      'sellerType': 'Plus',
-      'state': 'Delhi',
-      'type': 'Product',
-      'stock': 110,
-      'description': 'Pack of 6 decorative event lights for venues',
-    },
-    {
-      'id': '16',
-      'name': 'Three-Phase Motor 7.5HP',
-      'price': '₹26,500',
-      'priceValue': 26500,
-      'originalPrice': '₹29,000',
-      'discount': '9%',
-      'image': 'assets/images/motors/electric_motors_with_white_bg (2).jpeg',
-      'seller': 'MotorWorks India',
-      'rating': 4.6,
-      'reviews': 38,
-      'category': 'Motors',
-      'sellerType': 'Pro',
-      'state': 'Maharashtra',
-      'type': 'Product',
-      'stock': 9,
-      'description': 'High-efficiency industrial three-phase motor',
-    },
-    {
-      'id': '17',
-      'name': 'Safety Gloves (Electrical)',
-      'price': '₹399',
-      'priceValue': 399,
-      'originalPrice': '₹480',
-      'discount': '17%',
-      'image': 'assets/images/safety/safety_gloves.jpeg',
-      'seller': 'SafetyFirst Ltd',
-      'rating': 4.2,
-      'reviews': 210,
-      'category': 'Tools',
-      'sellerType': 'Free',
-      'state': 'Rajasthan',
-      'type': 'Product',
-      'stock': 200,
-      'description': 'Insulated gloves for safe electrical work',
-    },
-
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Row(
+      backgroundColor: const Color(0xFFF8FAFC),
+      body: Column(
         children: [
-          // Left Sidebar Navigation
-          if (_isSidebarVisible)
-          Container(
-            width: 280,
-            color: Colors.white,
-            child: Column(
-              children: [
-                // Logo Section
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.blue[800],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.flash_on,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Vidyut',
-                        style: GoogleFonts.inter(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                  // Search Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
-                        prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                        suffixIcon: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            '⌘K',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.grey[500],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: Colors.grey[300]!),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[50],
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(height: 30),
-                
-                // Navigation Links
-                Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products', isActive: true),
-                        _buildNavItem(Icons.business, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
-                        _buildNavItem(Icons.trending_up, 'Trending'),
-                        const Divider(height: 32),
-                        _buildNavItem(Icons.settings, 'Settings'),
-                        _buildNavItem(Icons.help, 'Help'),
-                      ],
-                  ),
-                ),
-                
-                // User Profile
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: Colors.grey[300]!),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                          backgroundColor: Colors.blue[100],
-                          child: Text(
-                          'JD',
-                            style: GoogleFonts.inter(
-                              color: Colors.blue[800],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                              Text(
-                              'John Doe',
-                                style: GoogleFonts.inter(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Text(
-                                'john.doe@example.com',
-                                style: GoogleFonts.inter(
-                                color: Colors.grey[600],
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          // Unified Navigation
+          UnifiedNavigation(
+            currentPage: 'search',
+            isMobile: ResponsiveHelper.isMobile(context),
           ),
           
-          // Main Content
+          // Content
           Expanded(
-            child: Column(
-              children: [
-                // Top Navigation Bar
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey[200]!),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(ResponsiveHelper.getResponsivePadding(context, mobile: 16, tablet: 20, desktop: 24)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Search Products',
+                    style: GoogleFonts.manrope(
+                      fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 24, tablet: 28, desktop: 32),
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1E293B),
                     ),
                   ),
-                  child: Row(
+                  const SizedBox(height: 8),
+                  Text(
+                    'Find the best electrical products and materials',
+                    style: GoogleFonts.manrope(
+                      fontSize: 16,
+                      color: const Color(0xFF64748B),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Search Bar
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color(0xFFF1F5F9),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF1E293B).withOpacity(0.04),
+                          spreadRadius: 0,
+                          blurRadius: 20,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Search products, brands, or sellers...',
+                        hintStyle: GoogleFonts.manrope(color: const Color(0xFF94A3B8)),
+                        prefixIcon: const Icon(Ionicons.search_outline, color: Color(0xFF64748B)),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      ),
+                      onChanged: (value) => setState(() {}),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Filters Row
+                  Row(
                     children: [
-                      // Menu Toggle Button
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _isSidebarVisible = !_isSidebarVisible;
-                          });
-                        },
-                        icon: Icon(
-                          _isSidebarVisible ? Icons.menu_open : Icons.menu,
-                          color: Colors.blue[800],
-                          size: 24,
-                        ),
-                      ),
-                      
-                      const SizedBox(width: 16),
-                      
-                      // Logo
-                      Row(
-                        children: [
-                          Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: Colors.blue[800],
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.flash_on,
-                                color: Colors.white,
-                                size: 18,
-                              ),
+                      // Category Filter
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFFF1F5F9),
+                              width: 1,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Vidyut',
-                            style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue[800],
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(width: 40),
-                      
-                      // Navigation Links
-                      Row(
-                          children: [
-                          _buildNavLink('Home', false),
-                          _buildNavLink('Products', true),
-                          _buildNavLink('Suppliers', false),
-                          _buildNavLink('Buy Leads', false),
-                          _buildNavLink('Sell', false),
-                        ],
-                      ),
-                      
-                      const Spacer(),
-                      
-                      // Right Side Actions
-                      Row(
-                        children: [
-                          // Wishlist
-                      IconButton(
-                            icon: const Icon(Icons.favorite_border, color: Colors.grey),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const WishlistScreen()),
-                              );
-                            },
-                          ),
-                          
-                          // Cart
-                      IconButton(
-                            icon: const Icon(Icons.shopping_cart_outlined, color: Colors.grey),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const CartScreen()),
-                              );
-                            },
-                          ),
-                          
-                          const SizedBox(width: 16),
-                          
-                          // Sign In
-                          OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LoginScreen()),
-                          );
-                        },
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.blue[800],
-                              side: BorderSide(color: Colors.blue[800]!),
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                        child: Text(
-                          'Sign In',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                          
-                          const SizedBox(width: 12),
-                          
-                          // Register
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[800],
-                          foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text(
-                              'Register',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ],
-                                ),
-                              ],
-                            ),
-                          ),
-                
-                // Search and Filter Section
-                Container(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                              children: [
-                      // Search Bar
-                      Row(
-                              children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _searchController,
-                              decoration: InputDecoration(
-                                hintText: 'Search by product, brand, or location...',
-                                hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
-                                prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: Colors.grey[300]!),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
-                                ),
-                                filled: true,
-                                fillColor: Colors.grey[50],
-                              ),
-                            ),
-                          ),
-                          
-                          const SizedBox(width: 16),
-                          
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue[800],
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          child: Text(
-                              'Search',
-                              style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                      ),
-                      
-                      const SizedBox(height: 20),
-                      
-                      // Filter and Sort Options
-                      Row(
-                      children: [
-                          // Category Dropdown
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey[300]!),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                          child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
                               value: _selectedCategory,
-                              underline: const SizedBox(),
+                              isExpanded: true,
+                              icon: const Icon(Ionicons.chevron_down_outline, color: Color(0xFF64748B)),
+                              style: GoogleFonts.manrope(
+                                color: const Color(0xFF1E293B),
+                                fontSize: 14,
+                              ),
                               items: [
                                 'All Categories',
+                                'Switches & Sockets',
                                 'Wires & Cables',
-                                'Circuit Breakers',
-                                'Lights',
-                                'Motors',
+                                'MCB & RCCB',
+                                'LED Lights',
+                                'Fans',
+                                'Pumps',
                                 'Tools',
-                                'Safety Equipment',
                               ].map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(
-                                    value,
-                                    style: GoogleFonts.inter(fontSize: 14),
-                                  ),
+                                  child: Text(value),
                                 );
                               }).toList(),
                               onChanged: (String? newValue) {
@@ -815,410 +294,138 @@ class _D_SearchProductsScreenState extends State<D_SearchProductsScreen> {
                               },
                             ),
                           ),
-                          
-                          const SizedBox(width: 16),
-                          
-                          // Sort Dropdown
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey[300]!),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: DropdownButton<String>(
-                              value: _selectedSortBy,
-                              underline: const SizedBox(),
-                              items: [
-                                'Best match',
-                                'Lowest price',
-                                'Highest price',
-                                'Verified sellers first',
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    style: GoogleFonts.inter(fontSize: 14),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  _selectedSortBy = newValue!;
-                                });
-                              },
-                            ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      
+                      // Sort By Filter
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFFF1F5F9),
+                            width: 1,
                           ),
-                          
-                          const Spacer(),
-                          
-                          // Toggle Products vs Materials
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey[300]!),
-                              borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _selectedSortBy,
+                            icon: const Icon(Ionicons.chevron_down_outline, color: Color(0xFF64748B)),
+                            style: GoogleFonts.manrope(
+                              color: const Color(0xFF1E293B),
+                              fontSize: 14,
                             ),
-                            child: Row(
-                            children: [
-                                ChoiceChip(
-                                  label: Text('Products', style: GoogleFonts.inter()),
-                                  selected: !_showMaterials,
-                                  onSelected: (v) => setState(() => _showMaterials = !v),
-                                ),
-                                const SizedBox(width: 8),
-                                ChoiceChip(
-                                  label: Text('Materials Used', style: GoogleFonts.inter()),
-                                  selected: _showMaterials,
-                                  onSelected: (v) => setState(() => _showMaterials = v),
-                                ),
-                              ],
-                            ),
+                            items: [
+                              'Best match',
+                              'Lowest price',
+                              'Highest price',
+                              'Verified sellers first',
+                            ].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedSortBy = newValue!;
+                              });
+                            },
                           ),
-
-                                      const SizedBox(width: 16),
-
-                          // Filters Button
-                                      OutlinedButton.icon(
-                                        onPressed: () {
-                                          setState(() {
-                                            _showFilters = !_showFilters;
-                                          });
-                                        },
-                            icon: const Icon(Icons.filter_list),
-                            label: const Text('Filters'),
-                                        style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.grey[700],
-                              side: BorderSide(color: Colors.grey[400]!),
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      
+                      // View Toggle
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFFF1F5F9),
+                            width: 1,
                           ),
-                          
-                          const SizedBox(width: 16),
-                          
-                          // View Toggle
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                            setState(() {
-                                    _isGridView = true;
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.grid_view,
-                                  color: _isGridView ? Colors.blue[800] : Colors.grey,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isGridView = false;
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.view_list,
-                                  color: !_isGridView ? Colors.blue[800] : Colors.grey,
-                                ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildViewToggleButton(Ionicons.grid_outline, true),
+                            _buildViewToggleButton(Ionicons.list_outline, false),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                              
-                // Filters Panel (expand/collapse)
-                              if (_showFilters)
-                                Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey[200]!),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8, offset: const Offset(0, 4)),
-                      ],
+                  const SizedBox(height: 24),
+                  
+                  // Results Count
+                  Text(
+                    '${filteredProducts.length} products found',
+                    style: GoogleFonts.manrope(
+                      fontSize: 14,
+                      color: const Color(0xFF64748B),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Price range (₹)', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: RangeSlider(
-                                values: _priceRange,
-                                min: 0,
-                                max: 20000,
-                                divisions: 20,
-                                labels: RangeLabels('₹${_priceRange.start.round()}', '₹${_priceRange.end.round()}'),
-                                onChanged: (v) => setState(() => _priceRange = v),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 120,
-                              child: Text('₹${_priceRange.start.round()} - ₹${_priceRange.end.round()}', style: GoogleFonts.inter()),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        Row(
-                          children: [
-                            Text('Seller type:', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-                            const SizedBox(width: 12),
-                            DropdownButton<String>(
-                              value: _sellerType,
-                              items: const [
-                                DropdownMenuItem(value: 'All', child: Text('All')),
-                                DropdownMenuItem(value: 'Free', child: Text('Free')),
-                                DropdownMenuItem(value: 'Plus', child: Text('Plus')),
-                                DropdownMenuItem(value: 'Pro', child: Text('Pro')),
-                              ],
-                              onChanged: (v) => setState(() => _sellerType = v!),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        Row(
-                                    children: [
-                            Text('State:', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-                            const SizedBox(width: 12),
-                            DropdownButton<String>(
-                              value: _selectedState,
-                              items: const [
-                                DropdownMenuItem(value: 'All', child: Text('All')),
-                                DropdownMenuItem(value: 'Maharashtra', child: Text('Maharashtra')),
-                                DropdownMenuItem(value: 'Gujarat', child: Text('Gujarat')),
-                                DropdownMenuItem(value: 'Karnataka', child: Text('Karnataka')),
-                                DropdownMenuItem(value: 'Tamil Nadu', child: Text('Tamil Nadu')),
-                                DropdownMenuItem(value: 'Delhi', child: Text('Delhi')),
-                                DropdownMenuItem(value: 'Punjab', child: Text('Punjab')),
-                                DropdownMenuItem(value: 'Rajasthan', child: Text('Rajasthan')),
-                                DropdownMenuItem(value: 'Uttar Pradesh', child: Text('Uttar Pradesh')),
-                              ],
-                              onChanged: (v) => setState(() => _selectedState = v!),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        Row(
-                          children: [
-                            Text('Min rating:', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Slider(
-                                value: _minRating,
-                                min: 0,
-                                max: 5,
-                                divisions: 5,
-                                label: _minRating.toStringAsFixed(0),
-                                onChanged: (v) => setState(() => _minRating = v),
-                              ),
-                            ),
-                            SizedBox(width: 40, child: Text(_minRating.toStringAsFixed(1), style: GoogleFonts.inter())),
-                          ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                // Results Summary
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${filteredProducts.length} Results Found',
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                      Text(
-                        'Showing 1-${filteredProducts.length} of ${filteredProducts.length}',
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-                
-                const SizedBox(height: 20),
-                
-                // Products Grid
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: _isGridView ? _buildProductsGrid() : _buildProductsList(),
-                  ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  
+                  // Products Grid
+                  if (_isGridView)
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: ResponsiveHelper.getResponsiveColumns(context, mobile: 2, tablet: 3, desktop: 4),
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemCount: filteredProducts.length,
+                      itemBuilder: (context, index) {
+                        final product = filteredProducts[index];
+                        return _buildProductCard(product);
+                      },
+                    )
+                  else
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: filteredProducts.length,
+                      itemBuilder: (context, index) {
+                        final product = filteredProducts[index];
+                        return _buildProductListItem(product);
+                      },
+                    ),
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
   }
-  
-  Widget _buildNavItem(IconData icon, String title, {bool isActive = false, String? badge}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
-        leading: Stack(
-          children: [
-            Icon(
-          icon,
-              color: isActive ? Colors.blue[800] : Colors.grey[600],
-              size: 24,
-            ),
-            if (badge != null)
-              Positioned(
-                right: 0,
-                top: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                    color: Colors.red[500],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                ),
-                child: Text(
-                  badge,
-                    style: GoogleFonts.inter(
-                    color: Colors.white,
-                      fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-          ],
-        ),
-        title: Text(
-          title,
-          style: GoogleFonts.inter(
-            color: isActive ? Colors.blue[800] : Colors.grey[700],
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-          ),
-        ),
-        tileColor: isActive ? Colors.blue[50] : null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        onTap: () {
-          if (title == 'Home') {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const D_HomeScreen()),
-              (route) => false,
-            );
-          } else if (title == 'Search Products') {
-            // stay on this page
-          } else if (title == 'My Orders') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const OrdersScreen()));
-          } else if (title == 'Wishlist') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const WishlistScreen()));
-          } else if (title == 'Shopping Cart') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));
-          } else if (title == 'Sell') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SellerDashboardScreen()));
-          } else if (title == 'B2B Leads') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const B2BLeadsScreen()));
-          } else if (title == 'State Info') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const D_StateInfoScreen()));
-          } else if (title == 'Settings') {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Settings coming soon', style: GoogleFonts.inter())));
-          } else if (title == 'Help') {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Help center coming soon', style: GoogleFonts.inter())));
-          }
-        },
-      ),
-    );
-  }
-  
-  Widget _buildNavLink(String title, bool isActive) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: TextButton(
-        onPressed: () {
-          if (title == 'Home') {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const D_HomeScreen()),
-              (route) => false,
-            );
-          } else if (title == 'Products') {
-            // already here
-          } else if (title == 'Suppliers') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const B2BLeadsScreen()));
-          } else if (title == 'Buy Leads') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const B2BLeadsScreen()));
-          } else if (title == 'Sell') {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const SellerDashboardScreen()));
-          }
-        },
-        child: Text(
-          title,
-          style: GoogleFonts.inter(
-            color: isActive ? Colors.blue[800] : Colors.grey[700],
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
-  
-  Widget _buildProductsGrid() {
-    final width = MediaQuery.of(context).size.width;
-    final crossAxis = width < 700
-        ? 2
-        : width < 1100
-            ? 3
-            : 4;
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxis,
-        childAspectRatio: 0.8,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-      ),
-      itemCount: filteredProducts.length,
-      itemBuilder: (context, index) {
-        final product = filteredProducts[index];
-        return _buildProductCard(product);
-      },
-    );
-  }
 
-  Widget _buildProductsList() {
-    return ListView.builder(
-      itemCount: filteredProducts.length,
-      itemBuilder: (context, index) {
-        final product = filteredProducts[index];
-        return _buildProductListItem(product);
+  Widget _buildViewToggleButton(IconData icon, bool isGrid) {
+    final isSelected = _isGridView == isGrid;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _isGridView = isGrid;
+        });
       },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF3B82F6) : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Icon(
+          icon,
+          color: isSelected ? Colors.white : const Color(0xFF64748B),
+          size: 20,
+        ),
+      ),
     );
   }
 
@@ -1227,351 +434,567 @@ class _D_SearchProductsScreenState extends State<D_SearchProductsScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(
+          color: const Color(0xFFF1F5F9),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
+            color: const Color(0xFF1E293B).withOpacity(0.04),
+            spreadRadius: 0,
+            blurRadius: 20,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductDetailsScreen(
-                  product: product,
-                  allProducts: products,
-                ),
-              ),
-            );
-          },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-              // Product Image
-              Expanded(
-                child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  color: Colors.grey[100],
-                  ),
-                  child: Stack(
-                    children: [
-                      // Product image
-                      Positioned.fill(
-                child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: Image.asset(
-                    product['image'],
-                    fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Center(
-                              child: Icon(Icons.image, size: 60, color: Colors.grey[400]),
-                            ),
-                  ),
-                ),
+          // Product Image
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color(0xFFF8FAFC),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
               ),
-              
-                      // Discount Badge
-              Positioned(
-                top: 12,
-                left: 12,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                            color: Colors.green[600],
-                            borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                            product['discount'],
-                            style: GoogleFonts.inter(
-                      color: Colors.white,
-                              fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+              clipBehavior: Clip.antiAlias,
+              child: Image.asset(
+                _imagePathOf(product),
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stack) {
+                  return Image.asset(
+                    'assets/images/product-1.jpg',
+                    fit: BoxFit.contain,
+                  );
+                },
               ),
-              
-                      // Wishlist Button
-                Positioned(
-                  top: 12,
-                  right: 12,
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.grey,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              
-              // Product Info
+            ),
+          ),
+          
+          // Product Info
           Padding(
-                padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                      product['name'],
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
+                  product['name'],
+                  style: GoogleFonts.manrope(
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
-                        color: Colors.grey[900],
+                    color: const Color(0xFF1E293B),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                
-                    const SizedBox(height: 4),
-                    
-                    Text(
-                      'by ${product['seller']}',
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 8),
-                    
-                    // Rating
-                Row(
+                const SizedBox(height: 4),
+                Text(
+                  'by ',
+                  style: GoogleFonts.manrope(fontSize: 12, color: const Color(0xFF64748B)),
+                ),
+                _CompanyLink(
+                  text: product['seller'],
+                  url: _sellerWebsiteMap[(product['seller'] ?? '').toString()] ?? 'https://example.com',
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '₹${product['price'].toString().replaceAll('₹', '')}',
+                  style: GoogleFonts.manrope(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF3B82F6),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
-                        Row(
-                          children: List.generate(5, (index) {
-                            return Icon(
-                              index < product['rating'].floor() ? Icons.star : Icons.star_border,
-                              color: Colors.amber,
-                      size: 14,
-                            );
-                          }),
+                    OutlinedButton(
+                      onPressed: () => _viewProduct(product),
+                      child: const Text('View Product'),
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                          '(${product['reviews']})',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                    OutlinedButton(
+                      onPressed: () => _contactSeller(product),
+                      child: const Text('Contact Seller'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _whatsappSeller(product),
+                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF25D366)),
+                      child: const Text('WhatsApp'),
                     ),
                   ],
                 ),
-                
-                    const SizedBox(height: 8),
-                
-                // Price
-                    Text(
-                      product['price'],
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue[800],
-                      ),
-                    ),
-                  ],
-                      ),
-                    ),
-                  ],
-                ),
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildProductListItem(Map<String, dynamic> product) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(
+          color: const Color(0xFFF1F5F9),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
+            color: const Color(0xFF1E293B).withOpacity(0.04),
+            spreadRadius: 0,
+            blurRadius: 20,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductDetailsScreen(
-                                  product: product,
-                  allProducts: products,
-                                ),
-                              ),
-                            );
-                          },
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-                    children: [
-                // Product Image
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Stack(
-                    children: [
-                      // Product image
-                      Positioned.fill(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      product['image'],
-                      fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Center(
-                              child: Icon(Icons.image, size: 40, color: Colors.grey[400]),
-                            ),
-                    ),
-                  ),
-                ),
-                
-                      // Discount Badge
-                      Positioned(
-                        top: 8,
-                        left: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.green[600],
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            product['discount'],
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                      ),
-                    ),
-                  ],
-                ),
-                ),
-                
-                const SizedBox(width: 16),
-                
-                // Product Info
-                Expanded(
-                  child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-                        product['name'],
-              style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                color: Colors.grey[900],
-              ),
-                      ),
-                      
-                      const SizedBox(height: 4),
-                      
-        Text(
-                        'by ${product['seller']}',
-          style: GoogleFonts.inter(
-            fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      
-        const SizedBox(height: 8),
-                      
-                      // Rating
-        Row(
-          children: [
-        Row(
-          children: List.generate(5, (index) {
-                              return Icon(
-                                index < product['rating'].floor() ? Icons.star : Icons.star_border,
-                color: Colors.amber,
-                                size: 16,
-            );
-          }),
-        ),
-                          const SizedBox(width: 8),
-            Text(
-                            '(${product['reviews']})',
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                              color: Colors.grey[600],
-              ),
+      child: Row(
+        children: [
+          // Product Image
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(8),
             ),
-          ],
-        ),
-        
-                      const SizedBox(height: 8),
-                      
-                      Text(
-                        product['description'],
-              style: GoogleFonts.inter(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+            clipBehavior: Clip.antiAlias,
+            child: Image.asset(
+              _imagePathOf(product),
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stack) {
+                return Image.asset(
+                  'assets/images/product-1.jpg',
+                  fit: BoxFit.contain,
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 16),
+          
+          // Product Info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product['name'],
+                  style: GoogleFonts.manrope(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF1E293B),
                   ),
                 ),
-                
-                // Price and Actions
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                const SizedBox(height: 4),
+                Text(
+                  'by ',
+                  style: GoogleFonts.manrope(fontSize: 14, color: const Color(0xFF64748B)),
+                ),
+                _CompanyLink(
+                  text: product['seller'],
+                  url: _sellerWebsiteMap[(product['seller'] ?? '').toString()] ?? 'https://example.com',
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '₹${product['price'].toString().replaceAll('₹', '')}',
+                  style: GoogleFonts.manrope(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF3B82F6),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
-                    Text(
-                      product['price'],
-            style: GoogleFonts.inter(
-                        fontSize: 18,
-              fontWeight: FontWeight.bold,
-                        color: Colors.blue[800],
-                      ),
+                    OutlinedButton(
+                      onPressed: () => _viewProduct(product),
+                      child: const Text('View Product'),
                     ),
-                    
-                    const SizedBox(height: 8),
-                    
                     ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[800],
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      child: Text(
-                        'View Details',
-                        style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600),
-                      ),
+                      onPressed: () => _whatsappSeller(product),
+                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF25D366)),
+                      child: const Text('WhatsApp'),
                     ),
                   ],
                 ),
               ],
             ),
+          ),
+          
+          // Inline CTAs above replace separate right-side button
+        ],
+      ),
+    );
+  }
+
+  // Sample products data
+  final List<Map<String, dynamic>> products = [
+    {
+      'name': 'Philips LED Bulb 9W',
+      'seller': 'ElectroMart',
+      'price': '₹120',
+      'priceValue': 120,
+      'category': 'LED Lights',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Maharashtra',
+      'rating': 4.5,
+      'reviews': 128,
+      'description': 'Energy efficient LED bulb with warm white light',
+      'image': 'assets/images/lights/philips_bulb_single_white_bg.jpeg',
+    },
+    {
+      'name': 'Havells MCB 32A',
+      'seller': 'Power Solutions',
+      'price': '₹450',
+      'priceValue': 450,
+      'category': 'MCB & RCCB',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Delhi',
+      'rating': 4.2,
+      'reviews': 89,
+      'description': 'Miniature Circuit Breaker for electrical protection',
+      'image': 'assets/images/circuit-breakers/electric_mcb_60w_single_white_bg.jpeg',
+    },
+    {
+      'name': 'Finolex Cable 2.5mm',
+      'seller': 'Cable World',
+      'price': '₹2800',
+      'priceValue': 2800,
+      'category': 'Wires & Cables',
+      'type': 'Material',
+      'sellerType': 'Free',
+      'state': 'Karnataka',
+      'rating': 4.0,
+      'reviews': 156,
+      'description': 'Copper wire cable for electrical wiring',
+      'image': 'assets/images/wires-and-cables/wires1.jpeg',
+    },
+    {
+      'name': 'Anchor Switch Socket',
+      'seller': 'Electrical Store',
+      'price': '₹85',
+      'priceValue': 85,
+      'category': 'Switches & Sockets',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Tamil Nadu',
+      'rating': 4.3,
+      'reviews': 203,
+      'description': 'Modular switch socket with safety features',
+      'image': 'assets/images/switches/electric_switch_white_bg.jpeg',
+    },
+    {
+      'name': 'Crompton Fan 1200mm',
+      'seller': 'Fan Hub',
+      'price': '₹2200',
+      'priceValue': 2200,
+      'category': 'Fans',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Gujarat',
+      'rating': 4.1,
+      'reviews': 67,
+      'description': 'Ceiling fan with energy efficient motor',
+      'image': 'assets/images/product-4.jpg',
+    },
+    {
+      'name': 'Polycab Wire 1.5mm',
+      'seller': 'Wire Solutions',
+      'price': '₹1800',
+      'priceValue': 1800,
+      'category': 'Wires & Cables',
+      'type': 'Material',
+      'sellerType': 'Free',
+      'state': 'Rajasthan',
+      'rating': 3.8,
+      'reviews': 94,
+      'description': 'Electrical wire for domestic wiring',
+      'image': 'assets/images/wires-and-cables/wires1.jpeg',
+    },
+    {
+      'name': 'LED Tube Light 60W',
+      'seller': 'Bright Lights Co',
+      'price': '₹180',
+      'priceValue': 180,
+      'category': 'LED Lights',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Haryana',
+      'rating': 4.6,
+      'reviews': 142,
+      'description': 'Energy-efficient tube light for homes and offices',
+      'image': 'assets/images/lights/tube_lights_60w_single_white_bg.jpeg',
+    },
+    {
+      'name': 'Event Light 60W',
+      'seller': 'Starlite',
+      'price': '₹250',
+      'priceValue': 250,
+      'category': 'LED Lights',
+      'type': 'Product',
+      'sellerType': 'Free',
+      'state': 'Kerala',
+      'rating': 4.4,
+      'reviews': 78,
+      'description': 'Compact event light suitable for parties and events',
+      'image': 'assets/images/lights/event_lights_60w_single_white_bg.jpeg',
+    },
+    {
+      'name': 'Mini Circuit Breaker 10A',
+      'seller': 'Breaker Mart',
+      'price': '₹320',
+      'priceValue': 320,
+      'category': 'MCB & RCCB',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Uttar Pradesh',
+      'rating': 4.3,
+      'reviews': 112,
+      'description': 'Reliable protection for household circuits',
+      'image': 'assets/images/circuit-breakers/circuit_breakers_single_white_bg.jpeg',
+    },
+    {
+      'name': 'Industrial Conduit 25mm',
+      'seller': 'Conduit Depot',
+      'price': '₹45/m',
+      'priceValue': 45,
+      'category': 'Tools',
+      'type': 'Material',
+      'sellerType': 'Free',
+      'state': 'Madhya Pradesh',
+      'rating': 4.1,
+      'reviews': 63,
+      'description': 'Durable PVC conduit pipe for industrial use',
+      'image': 'assets/images/conduits/conduit1.jpeg',
+    },
+    {
+      'name': 'Insulated Screwdriver Set',
+      'seller': 'Tool House',
+      'price': '₹399',
+      'priceValue': 399,
+      'category': 'Tools',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Punjab',
+      'rating': 4.3,
+      'reviews': 84,
+      'description': 'Set of insulated screwdrivers for electrical work',
+      'image': 'assets/images/tools/tool1.jpeg',
+    },
+    {
+      'name': 'Industrial Motor 2HP',
+      'seller': 'Motor Sales',
+      'price': '₹8990',
+      'priceValue': 8990,
+      'category': 'Pumps',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Telangana',
+      'rating': 4.6,
+      'reviews': 51,
+      'description': 'High-efficiency 2HP industrial motor',
+      'image': 'assets/images/motors/motor1.jpeg',
+    },
+    {
+      'name': 'Distribution Panel Box',
+      'seller': 'Panel Point',
+      'price': '₹12500',
+      'priceValue': 12500,
+      'category': 'Fans',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'West Bengal',
+      'rating': 4.5,
+      'reviews': 39,
+      'description': 'Metal distribution panel for safe power management',
+      'image': 'assets/images/panels/panel1.jpeg',
+    },
+    {
+      'name': 'Safety Gloves',
+      'seller': 'SecureWear',
+      'price': '₹199',
+      'priceValue': 199,
+      'category': 'Tools',
+      'type': 'Product',
+      'sellerType': 'Free',
+      'state': 'Odisha',
+      'rating': 4.2,
+      'reviews': 64,
+      'description': 'Protective gloves for electrical safety',
+      'image': 'assets/images/safety/safety1.jpeg',
+    },
+    {
+      'name': 'Three-Core Cable 4mm',
+      'seller': 'Cable World',
+      'price': '₹240/m',
+      'priceValue': 240,
+      'category': 'Wires & Cables',
+      'type': 'Material',
+      'sellerType': 'Plus',
+      'state': 'Maharashtra',
+      'rating': 4.2,
+      'reviews': 73,
+      'description': 'Durable three-core copper cable for wiring',
+      'image': 'assets/images/wires-and-cables/wires2.jpeg',
+    },
+    {
+      'name': 'Solar Charge Controller',
+      'seller': 'Solar Shop',
+      'price': '₹1899',
+      'priceValue': 1899,
+      'category': 'LED Lights',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Rajasthan',
+      'rating': 4.4,
+      'reviews': 41,
+      'description': 'PWM solar charge controller for panels',
+      'image': 'assets/images/transformer/solar_controller.jpeg',
+    },
+    {
+      'name': 'LED Street Light 60W',
+      'seller': 'Bright Lights Co',
+      'price': '₹1499',
+      'priceValue': 1499,
+      'category': 'LED Lights',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Gujarat',
+      'rating': 4.5,
+      'reviews': 58,
+      'description': 'Weatherproof LED street light with long life',
+      'image': 'assets/images/lights/street_light_60w_single_white_bg.jpeg',
+    },
+    {
+      'name': 'Smart Power Strip 4-Socket',
+      'seller': 'ElectroMart',
+      'price': '₹999',
+      'priceValue': 999,
+      'category': 'Switches & Sockets',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Karnataka',
+      'rating': 4.1,
+      'reviews': 76,
+      'description': 'Surge-protected 4-socket strip with master switch',
+      'image': 'assets/images/product-1.jpg',
+    },
+    {
+      'name': 'Heavy Duty Extension Cord 5m',
+      'seller': 'Power Solutions',
+      'price': '₹349',
+      'priceValue': 349,
+      'category': 'Wires & Cables',
+      'type': 'Product',
+      'sellerType': 'Free',
+      'state': 'Tamil Nadu',
+      'rating': 4.0,
+      'reviews': 51,
+      'description': '5 meter extension cable with PVC insulation',
+      'image': 'assets/images/product-2.jpg',
+    },
+    {
+      'name': 'Digital Multimeter',
+      'seller': 'Tool House',
+      'price': '₹799',
+      'priceValue': 799,
+      'category': 'Tools',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Delhi',
+      'rating': 4.4,
+      'reviews': 133,
+      'description': 'Portable multimeter for voltage, current and resistance',
+      'image': 'assets/images/product-3.jpg',
+    },
+    {
+      'name': 'Solar Panel 250W',
+      'seller': 'Solar Shop',
+      'price': '₹6500',
+      'priceValue': 6500,
+      'category': 'LED Lights',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Rajasthan',
+      'rating': 4.3,
+      'reviews': 62,
+      'description': 'High efficiency polycrystalline solar module',
+      'image': 'assets/images/product-4.jpg',
+    },
+    {
+      'name': 'PVC Insulation Tape (10pc)',
+      'seller': 'Wire Solutions',
+      'price': '₹129',
+      'priceValue': 129,
+      'category': 'Tools',
+      'type': 'Product',
+      'sellerType': 'Free',
+      'state': 'Uttar Pradesh',
+      'rating': 4.2,
+      'reviews': 47,
+      'description': 'Set of 10 durable insulation tapes for wiring',
+      'image': 'assets/images/tools/tool1.jpeg',
+    },
+    {
+      'name': 'MCB Distribution Box 8-Way',
+      'seller': 'Panel Point',
+      'price': '₹1790',
+      'priceValue': 1790,
+      'category': 'MCB & RCCB',
+      'type': 'Product',
+      'sellerType': 'Pro',
+      'state': 'Maharashtra',
+      'rating': 4.5,
+      'reviews': 38,
+      'description': 'Metal enclosure distribution box with neutral link',
+      'image': 'assets/images/panels/panel1.jpeg',
+    },
+    {
+      'name': 'Safety Helmet (Electrical Grade)',
+      'seller': 'SecureWear',
+      'price': '₹349',
+      'priceValue': 349,
+      'category': 'Tools',
+      'type': 'Product',
+      'sellerType': 'Plus',
+      'state': 'Gujarat',
+      'rating': 4.1,
+      'reviews': 59,
+      'description': 'ISI marked helmet suitable for electrical works',
+      'image': 'assets/images/safety/safety1.jpeg',
+    },
+  ];
+}
+
+class _CompanyLink extends StatelessWidget {
+  final String text;
+  final String url;
+  const _CompanyLink({required this.text, required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    final Uri uri = Uri.parse(url);
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () => launchUrl(uri, mode: LaunchMode.externalApplication),
+        child: Text(
+          text,
+          style: GoogleFonts.manrope(
+            fontSize: 12,
+            color: const Color(0xFF1D4ED8),
+            fontWeight: FontWeight.w600,
+            decoration: TextDecoration.none,
           ),
         ),
       ),

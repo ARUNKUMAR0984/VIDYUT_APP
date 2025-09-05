@@ -25,7 +25,7 @@ class _M_HomeScreenState extends State<M_HomeScreen> {
         titleSpacing: 0,
         title: Text(
           "Vidyut Nidhi",
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Colors.black,
@@ -65,7 +65,7 @@ class _M_HomeScreenState extends State<M_HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Text("Browse Categories",
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                         fontSize: 25, fontWeight: FontWeight.w600)),
               ),
             ),

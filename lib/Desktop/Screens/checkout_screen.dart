@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'order_confirmation_screen.dart';
@@ -101,7 +102,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         child: Center(
                           child: Text(
                             'V',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -112,7 +113,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       const SizedBox(width: 12),
                       Text(
                         'Vidyut Nidhi',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue[800],
@@ -129,19 +130,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.shopping_cart, 'Shopping Cart', isActive: true),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders'),
-                        _buildNavItem(Icons.favorite, 'Wishlist'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.cart_outline, 'Shopping Cart', isActive: true),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders'),
+                        _buildNavItem(Ionicons.heart_outline, 'Wishlist'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -163,7 +164,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         backgroundColor: Colors.blue[800],
                         child: Text(
                           'JD',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -176,14 +177,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           children: [
                             Text(
                               'John Doe',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey[900],
                               ),
                             ),
                             Text(
                               'john.doe@email.com',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.grey[600],
                               ),
@@ -225,7 +226,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       const SizedBox(width: 20),
                       Text(
                         'Checkout',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[900],
@@ -284,7 +285,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                             child: Text(
                               'Previous',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.blue[800],
                               ),
@@ -311,7 +312,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 )
                               : Text(
                                   _currentStep == 2 ? 'Place Order' : 'Continue',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
@@ -340,7 +341,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ),
         title: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: isActive ? Colors.blue[800] : Colors.grey[700],
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -354,7 +355,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 child: Text(
                   badge,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -396,7 +397,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ? const Icon(Icons.check, color: Colors.white, size: 20)
                 : Text(
                     '${step + 1}',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
@@ -406,7 +407,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         const SizedBox(height: 8),
         Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 12,
             fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
             color: isActive ? Colors.blue[800] : Colors.grey[600],
@@ -452,7 +453,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           Text(
             'Delivery Address',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
@@ -463,7 +464,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           // Contact Information
           Text(
             'Contact Information',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.grey[800],
@@ -478,7 +479,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   controller: _nameController,
                   decoration: InputDecoration(
                     labelText: 'Full Name',
-                    labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                    labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.blue[300]!),
@@ -502,7 +503,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   controller: _phoneController,
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
-                    labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                    labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.blue[300]!),
@@ -528,7 +529,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           // Address Information
           Text(
             'Address Information',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.grey[800],
@@ -541,7 +542,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             maxLines: 3,
             decoration: InputDecoration(
               labelText: 'Street Address',
-              labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+              labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Colors.blue[300]!),
@@ -568,7 +569,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   controller: _cityController,
                   decoration: InputDecoration(
                     labelText: 'City',
-                    labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                    labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.blue[300]!),
@@ -592,7 +593,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   controller: _stateController,
                   decoration: InputDecoration(
                     labelText: 'State',
-                    labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                    labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.blue[300]!),
@@ -616,7 +617,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   controller: _pincodeController,
                   decoration: InputDecoration(
                     labelText: 'Pincode',
-                    labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                    labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide(color: Colors.blue[300]!),
@@ -642,7 +643,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           // Delivery Options
           Text(
             'Delivery Options',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.grey[800],
@@ -699,14 +700,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   children: [
                     Text(
                       title,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[900],
                       ),
                     ),
                     Text(
                       description,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 12,
                         color: Colors.grey[600],
                       ),
@@ -716,7 +717,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               Text(
                 price,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[800],
                 ),
@@ -734,7 +735,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       children: [
         Text(
           'Payment Method',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.grey[900],
@@ -796,21 +797,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   children: [
                     Text(
                       title,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[900],
                       ),
                     ),
                     Text(
                       subtitle,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 12,
                         color: Colors.grey[600],
                       ),
                     ),
                     Text(
                       description,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 11,
                         color: Colors.grey[500],
                       ),
@@ -831,7 +832,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       children: [
         Text(
           'Order Summary',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.grey[900],
@@ -892,7 +893,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             children: [
               Text(
                 'Delivery Address',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontWeight: FontWeight.w600,
                   color: Colors.grey[900],
                 ),
@@ -900,7 +901,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               const SizedBox(height: 8),
               Text(
                 '${_nameController.text}\n${_phoneController.text}\n${_addressController.text}\n${_cityController.text}, ${_stateController.text} - ${_pincodeController.text}',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   color: Colors.grey[600],
                 ),
               ),
@@ -919,7 +920,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           Expanded(
             child: Text(
               name,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.manrope(
                 fontWeight: FontWeight.w500,
                 color: Colors.grey[900],
               ),
@@ -927,14 +928,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           Text(
             quantity,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               color: Colors.grey[600],
             ),
           ),
           const SizedBox(width: 16),
           Text(
             price,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontWeight: FontWeight.w600,
               color: Colors.grey[900],
             ),
@@ -952,14 +953,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
               color: Colors.grey[900],
             ),
           ),
           Text(
             value,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontWeight: isTotal ? FontWeight.bold : FontWeight.w600,
               color: isDiscount ? Colors.green : isTotal ? Colors.blue[800] : Colors.grey[900],
             ),

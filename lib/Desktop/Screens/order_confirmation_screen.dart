@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
@@ -31,7 +32,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
         ),
         title: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: isActive ? Colors.blue[800] : Colors.grey[700],
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -144,7 +145,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {},
@@ -166,21 +167,21 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_cart, 'Shopping Cart', badge: '3'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.cart_outline, 'Shopping Cart', badge: '3'),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
                         _buildNavItem(Icons.login, 'Sign In'),
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -434,7 +435,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                     (route) => false,
                                   );
                                 },
-                                icon: const Icon(Icons.home),
+                                icon: const Icon(Ionicons.home_outline),
                                 label: const Text('Continue Shopping'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue[600],

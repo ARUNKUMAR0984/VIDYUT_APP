@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'reviews_screen.dart';
 import 'search_products_screen.dart';
@@ -6,6 +7,7 @@ import 'home_screen.dart';
 import 'browse_brands_screen.dart';
 import 'state_info_screen.dart';
 import 'cart_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> product;
@@ -187,26 +189,56 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  void _addToCart() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '${widget.product['name']} added to cart!',
-          style: GoogleFonts.inter(),
-        ),
-        backgroundColor: Colors.blue[800],
-        action: SnackBarAction(
-          label: 'View Cart',
-          textColor: Colors.white,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CartScreen()),
-            );
-          },
-        ),
-      ),
-    );
+  final Map<String, String> _sellerPhoneMap = const {
+    'ElectroMart': '+919999000001',
+    'Power Solutions': '+919999000002',
+    'Cable World': '+919999000003',
+    'Electrical Store': '+919999000004',
+    'Fan Hub': '+919999000005',
+    'Wire Solutions': '+919999000006',
+    'Bright Lights Co': '+919999000007',
+    'Starlite': '+919999000008',
+    'Breaker Mart': '+919999000009',
+    'Conduit Depot': '+919999000010',
+    'Tool House': '+919999000011',
+    'Motor Sales': '+919999000012',
+    'Panel Point': '+919999000013',
+    'SecureWear': '+919999000014',
+    'Solar Shop': '+919999000015',
+  };
+
+  final Map<String, String> _sellerWebsiteMap = const {
+    'ElectroMart': 'https://electromart.com/',
+    'Power Solutions': 'https://www.powersolutions.co.in/',
+    'Cable World': 'https://example.com/cable-world',
+    'Electrical Store': 'https://example.com/electrical-store',
+    'Fan Hub': 'https://example.com/fan-hub',
+    'Wire Solutions': 'https://example.com/wire-solutions',
+    'Bright Lights Co': 'https://example.com/bright-lights',
+    'Starlite': 'https://example.com/starlite',
+    'Breaker Mart': 'https://example.com/breaker-mart',
+    'Conduit Depot': 'https://example.com/conduit-depot',
+    'Tool House': 'https://example.com/tool-house',
+    'Motor Sales': 'https://example.com/motor-sales',
+    'Panel Point': 'https://example.com/panel-point',
+    'SecureWear': 'https://example.com/securewear',
+    'Solar Shop': 'https://example.com/solar-shop',
+  };
+
+  String _phoneForSeller() {
+    final String seller = (widget.product['seller'] ?? '').toString();
+    final String phone = (widget.product['phone'] ?? _sellerPhoneMap[seller] ?? '+911234567890').toString();
+    return phone;
+  }
+
+  void _contactSeller() {
+    launchUrl(Uri.parse('tel:${_phoneForSeller()}'));
+  }
+
+  void _launchWhatsApp() {
+    final String message = Uri.encodeComponent('Hi, I am interested in ${widget.product['name']}');
+    final Uri wa = Uri.parse('https://wa.me/${_phoneForSeller().replaceAll('+', '')}?text=$message');
+    launchUrl(wa, mode: LaunchMode.externalApplication);
   }
 
   Widget _buildNavItem(IconData icon, String title, {bool isActive = false, String? badge}) {
@@ -236,7 +268,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   child: Text(
                     badge,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       color: Colors.white,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -249,7 +281,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
         title: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: isActive ? Colors.blue[800] : Colors.grey[700],
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -314,7 +346,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         child: Center(
                           child: Text(
                             'V',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -325,7 +357,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       const SizedBox(width: 12),
                       Text(
                         'Vidyut Nidhi',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue[800],
@@ -341,8 +373,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
-                      prefixIcon: Icon(Icons.search, color: Colors.blue[800]),
+                      hintStyle: GoogleFonts.manrope(color: Colors.grey[500]),
+                      prefixIcon: Icon(Ionicons.search_outline, color: Colors.blue[800]),
                       suffixIcon: IconButton(
                         icon: Icon(Icons.close, color: Colors.grey[600]),
                         onPressed: () {},
@@ -368,21 +400,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_cart, 'Shopping Cart', badge: '3'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.cart_outline, 'Shopping Cart', badge: '3'),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
                         _buildNavItem(Icons.login, 'Sign In'),
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -417,14 +449,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               children: [
                                 Text(
                                   'Guest User',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14,
                                   ),
                                 ),
                                 Text(
                                   'Sign in for better experience',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     color: Colors.grey[600],
                                     fontSize: 12,
                                   ),
@@ -443,7 +475,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue[800],
                                 foregroundColor: Colors.white,
-                                textStyle: GoogleFonts.inter(
+                                textStyle: GoogleFonts.manrope(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -461,7 +493,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.blue[800],
                                 side: BorderSide(color: Colors.blue[800]!),
-                                textStyle: GoogleFonts.inter(
+                                textStyle: GoogleFonts.manrope(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -495,7 +527,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         onPressed: () => Navigator.pop(context),
                         child: Text(
                           '← Back to Products',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             color: Colors.blue[800],
                             fontWeight: FontWeight.w500,
                           ),
@@ -506,7 +538,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       const SizedBox(width: 8),
                       Text(
                         widget.product['category'].toString().toUpperCase(),
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: Colors.grey[600],
                           fontWeight: FontWeight.w500,
                         ),
@@ -516,7 +548,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       const SizedBox(width: 8),
                       Text(
                         widget.product['name'],
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: Colors.grey[800],
                           fontWeight: FontWeight.w600,
                         ),
@@ -625,7 +657,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             // Product Title
                             Text(
                               widget.product['name'],
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[900],
@@ -635,13 +667,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             const SizedBox(height: 8),
                             
                             // Brand
-                            Text(
-                              'by ${widget.product['seller']}',
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w500,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  'by ',
+                                  style: GoogleFonts.manrope(
+                                    fontSize: 16,
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      final String seller = (widget.product['seller'] ?? '').toString();
+                                      final String url = _sellerWebsiteMap[seller] ?? 'https://example.com';
+                                      launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                                    },
+                                    child: Text(
+                                      widget.product['seller'],
+                                      style: GoogleFonts.manrope(
+                                        fontSize: 16,
+                                        color: const Color(0xFF1D4ED8),
+                                        fontWeight: FontWeight.w600,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             
                             const SizedBox(height: 16),
@@ -661,7 +716,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 const SizedBox(width: 8),
                                 Text(
                                   '4.0',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.grey[800],
@@ -670,7 +725,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 const SizedBox(width: 4),
                                 Text(
                                   '(128 reviews)',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 14,
                                     color: Colors.grey[600],
                                   ),
@@ -684,8 +739,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Row(
                               children: [
                                 Text(
-                                  '₹${widget.product['price']}',
-                                  style: GoogleFonts.inter(
+                                  '₹${widget.product['price'].toString().replaceAll('₹', '')}',
+                                  style: GoogleFonts.manrope(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue[800],
@@ -694,7 +749,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 const SizedBox(width: 12),
                                 Text(
                                   '₹${(double.parse(widget.product['price'].replaceAll(RegExp(r'[^\d.]'), '')) * 1.2).round()}',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 18,
                                     color: Colors.grey[500],
                                     decoration: TextDecoration.lineThrough,
@@ -709,7 +764,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                   child: Text(
                                     '20% OFF',
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.manrope(
                                       fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.green[700],
@@ -737,7 +792,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       const SizedBox(width: 8),
                                       Text(
                                         'Service Guarantees',
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.manrope(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.blue[800],
@@ -755,7 +810,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             const SizedBox(width: 4),
                                             Text(
                                               'Free Delivery',
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.manrope(
                                                 fontSize: 12,
                                                 color: Colors.grey[700],
                                               ),
@@ -770,7 +825,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             const SizedBox(width: 4),
                                             Text(
                                               'Easy Returns',
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.manrope(
                                                 fontSize: 12,
                                                 color: Colors.grey[700],
                                               ),
@@ -790,7 +845,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             const SizedBox(width: 4),
                                             Text(
                                               'Genuine Product',
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.manrope(
                                                 fontSize: 12,
                                                 color: Colors.grey[700],
                                               ),
@@ -805,7 +860,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             const SizedBox(width: 4),
                                             Text(
                                               '24/7 Support',
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.manrope(
                                                 fontSize: 12,
                                                 color: Colors.grey[700],
                                               ),
@@ -824,7 +879,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             // Quantity Selector
                             Text(
                               'Quantity',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey[800],
@@ -855,7 +910,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         alignment: Alignment.center,
                                         child: Text(
                                           selectedQuantity.toString(),
-                                          style: GoogleFonts.inter(
+                                          style: GoogleFonts.manrope(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -875,7 +930,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 const SizedBox(width: 12),
                                 Text(
                                   '${widget.product['stock']} available',
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 14,
                                     color: Colors.grey[600],
                                   ),
@@ -890,42 +945,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               children: [
                                 Expanded(
                                   child: OutlinedButton(
-                                    onPressed: _addToCart,
+                                    onPressed: _contactSeller,
                                     style: OutlinedButton.styleFrom(
                                       foregroundColor: Colors.blue[800],
                                       side: BorderSide(color: Colors.blue[800]!),
                                       padding: const EdgeInsets.symmetric(vertical: 16),
-                                      textStyle: GoogleFonts.inter(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: const Text('Add to Cart'),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // Contact seller functionality
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Contacting seller...',
-                                            style: GoogleFonts.inter(),
-                                          ),
-                                          backgroundColor: Colors.blue[800],
-                                        ),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue[800],
-                                      foregroundColor: Colors.white,
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
-                                      textStyle: GoogleFonts.inter(
+                                      textStyle: GoogleFonts.manrope(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -936,58 +961,54 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     child: const Text('Contact Seller'),
                                   ),
                                 ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: _launchWhatsApp,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF25D366),
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      textStyle: GoogleFonts.manrope(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    child: const Text('WhatsApp'),
+                                  ),
+                                ),
                               ],
                             ),
                             
                             const SizedBox(height: 16),
-                            
-                            ElevatedButton(
-                              onPressed: () {
-                                // Buy now functionality
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const CartScreen()),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green[600],
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                textStyle: GoogleFonts.inter(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text('Buy Now'),
-                            ),
-                            
-                            const SizedBox(height: 12),
-                            
-                            // Write Review Button
-                            OutlinedButton.icon(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return WriteReviewDialog(product: widget.product);
+                            Row(
+                              children: [
+                                OutlinedButton.icon(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return WriteReviewDialog(product: widget.product);
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              icon: const Icon(Icons.edit),
-                              label: Text(
-                                'Write a Review',
-                                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                side: BorderSide(color: Colors.blue[800]!),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                                  icon: const Icon(Icons.edit),
+                                  label: Text(
+                                    'Write a Review',
+                                    style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
+                                  ),
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                                    side: BorderSide(color: Colors.blue[800]!),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ],
                         ),
@@ -1000,7 +1021,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   // Specifications Section
                   Text(
                     'Specifications',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[900],
@@ -1024,7 +1045,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 flex: 2,
                                 child: Text(
                                   entry.key,
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.grey[700],
@@ -1035,7 +1056,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 flex: 3,
                                 child: Text(
                                   entry.value,
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 14,
                                     color: Colors.grey[800],
                                   ),
@@ -1047,6 +1068,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       }).toList(),
                     ),
                   ),
+
+                  const SizedBox(height: 40),
+
+                  // Description Section
+                  Text(
+                    'Description',
+                    style: GoogleFonts.manrope(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[900],
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[200]!),
+                    ),
+                    child: Text(
+                      (widget.product['description'] ?? 'No description available.') as String,
+                      style: GoogleFonts.manrope(
+                        fontSize: 14,
+                        color: Colors.grey[800],
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
                   
                   const SizedBox(height: 60),
                   
@@ -1056,7 +1107,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     children: [
                       Text(
                         'Customer Reviews',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.grey[900],
@@ -1073,7 +1124,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         },
                         child: Text(
                           'View All Reviews',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             color: Colors.blue[800],
                             fontWeight: FontWeight.w600,
                           ),
@@ -1103,7 +1154,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     backgroundColor: Colors.blue[100],
                                     child: Text(
                                       review['user'][0],
-                                      style: GoogleFonts.inter(
+                                      style: GoogleFonts.manrope(
                                         color: Colors.blue[800],
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1118,7 +1169,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           children: [
                                             Text(
                                               review['user'],
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.manrope(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                                 color: Colors.grey[800],
@@ -1134,7 +1185,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 ),
                                                 child: Text(
                                                   'Verified',
-                                                  style: GoogleFonts.inter(
+                                                  style: GoogleFonts.manrope(
                                                     fontSize: 10,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.green[700],
@@ -1158,7 +1209,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               review['date'],
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.manrope(
                                                 fontSize: 12,
                                                 color: Colors.grey[600],
                                               ),
@@ -1173,7 +1224,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               const SizedBox(height: 12),
                               Text(
                                 review['comment'],
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                   fontSize: 14,
                                   color: Colors.grey[700],
                                   height: 1.5,
@@ -1191,7 +1242,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   // Similar Products Section
                   Text(
                     'SIMILAR PRODUCTS YOU MIGHT LIKE',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[900],
@@ -1252,7 +1303,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: [
                                   Text(
                                     product['name'],
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.manrope(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.grey[800],
@@ -1263,7 +1314,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   const SizedBox(height: 4),
                                   Text(
                                     '₹${product['price']}',
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.manrope(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.blue[800],
@@ -1288,7 +1339,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         backgroundColor: Colors.blue[800],
                                         foregroundColor: Colors.white,
                                         padding: const EdgeInsets.symmetric(vertical: 8),
-                                        textStyle: GoogleFonts.inter(
+                                        textStyle: GoogleFonts.manrope(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -1360,7 +1411,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 children: [
                   Text(
                     'Write a Review',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[900],
@@ -1404,14 +1455,14 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                         children: [
                           Text(
                             widget.product['name'],
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontWeight: FontWeight.w600,
                               color: Colors.grey[900],
                             ),
                           ),
                           Text(
                             widget.product['description'],
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontSize: 12,
                               color: Colors.grey[600],
                             ),
@@ -1428,7 +1479,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
               // Rating
               Text(
                 'Your Rating',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey[900],
@@ -1459,7 +1510,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 controller: _titleController,
                 decoration: InputDecoration(
                   labelText: 'Review Title',
-                  labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                  labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: Colors.blue[300]!),
@@ -1485,7 +1536,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 maxLines: 4,
                 decoration: InputDecoration(
                   labelText: 'Your Review',
-                  labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                  labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: Colors.blue[300]!),
@@ -1516,7 +1567,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
                         'Cancel',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                        style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -1538,7 +1589,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                             )
                           : Text(
                               'Submit Review',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
@@ -1569,7 +1620,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Thank you for your review!', style: GoogleFonts.inter()),
+            content: Text('Thank you for your review!', style: GoogleFonts.manrope()),
             backgroundColor: Colors.green[600],
           ),
         );
@@ -1577,7 +1628,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
     } else if (_rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please select a rating', style: GoogleFonts.inter()),
+          content: Text('Please select a rating', style: GoogleFonts.manrope()),
           backgroundColor: Colors.red[600],
         ),
       );

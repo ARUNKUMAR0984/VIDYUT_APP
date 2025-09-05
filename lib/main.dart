@@ -19,12 +19,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.interTextTheme(),
+        textTheme: GoogleFonts.manropeTextTheme(),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue[800],
             foregroundColor: Colors.white,
-            textStyle: GoogleFonts.inter(
+            textStyle: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.blue[800],
             side: BorderSide(color: Colors.blue[800]!),
-            textStyle: GoogleFonts.inter(
+            textStyle: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -57,8 +57,8 @@ class MyApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(color: Colors.blue[800]!, width: 2),
           ),
-          labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
-          hintStyle: GoogleFonts.inter(color: Colors.grey[500]),
+          labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
+          hintStyle: GoogleFonts.manrope(color: Colors.grey[500]),
         ),
       ),
       home: const Responsive_Screen(),

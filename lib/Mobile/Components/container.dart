@@ -33,7 +33,7 @@ class M_container extends StatelessWidget {
             children: [
               Text(
                 "Hyderabad,500098",
-                style: GoogleFonts.inter(),
+                style: GoogleFonts.manrope(),
               ),
             ],
           )),

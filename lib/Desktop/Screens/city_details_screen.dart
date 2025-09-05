@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
 import 'browse_brands_screen.dart';
@@ -79,7 +80,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                     controller: _sidebarSearchController,
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       suffixIcon: Container(
                         margin: const EdgeInsets.all(4),
                         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -112,19 +113,19 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info', isActive: true),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info', isActive: true),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -241,7 +242,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                             controller: _searchController,
                             decoration: InputDecoration(
                               hintText: 'Search products...',
-                              prefixIcon: const Icon(Icons.search),
+                              prefixIcon: const Icon(Ionicons.search_outline),
                               suffixIcon: Container(
                                 margin: const EdgeInsets.all(4),
                                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -279,7 +280,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.location_on, color: Colors.grey[600]),
+                              Icon(Ionicons.location_outline, color: Colors.grey[600]),
                               const SizedBox(width: 8),
                               const Text('Deliver to: Set location'),
                             ],
@@ -294,7 +295,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                           onPressed: () {},
                         ),
                         IconButton(
-                          icon: const Icon(Icons.favorite_border),
+                          icon: const Icon(Ionicons.heart_outline_border),
                           onPressed: () {},
                         ),
                         
@@ -489,7 +490,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
-                                    Icons.home,
+                                    Ionicons.home_outline,
                                     color: Colors.white,
                                     size: 40,
                                   ),
@@ -527,7 +528,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     _buildMetricItem(
-                                      Icons.person,
+                                      Ionicons.person_outline,
                                       '${widget.cityData['population']} Million',
                                       'Population',
                                     ),
@@ -623,7 +624,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.lightbulb,
+                                            Ionicons.bulb_outline,
                                             color: Colors.orange[600],
                                             size: 24,
                                           ),
@@ -680,7 +681,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.person,
+                                            Ionicons.person_outline,
                                             color: Colors.green[600],
                                             size: 24,
                                           ),
@@ -745,7 +746,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                                       const SizedBox(height: 16),
                                       
                                       _buildContactItem(
-                                        Icons.location_on,
+                                        Ionicons.location_outline,
                                         _getCityOffice(widget.cityData['name']!),
                                       ),
                                     ],
@@ -789,7 +790,7 @@ class _D_CityDetailsScreenState extends State<D_CityDetailsScreen> {
                                       const SizedBox(height: 16),
                                       
                                       _buildContactItem(
-                                        Icons.location_on,
+                                        Ionicons.location_outline,
                                         _getCityOffice(widget.cityData['name']!),
                                       ),
                                       

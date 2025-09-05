@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
 import 'browse_brands_screen.dart';
@@ -83,7 +84,7 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                     controller: _sidebarSearchController,
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: Colors.grey[300]!),
@@ -101,19 +102,19 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info', isActive: true),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info', isActive: true),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -220,7 +221,7 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                             controller: _searchController,
                             decoration: InputDecoration(
                               hintText: 'Search products...',
-                              prefixIcon: const Icon(Icons.search),
+                              prefixIcon: const Icon(Ionicons.search_outline),
                               suffixIcon: Container(
                                 margin: const EdgeInsets.all(4),
                                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -229,7 +230,7 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: const Icon(
-                                  Icons.grid_view,
+                                  Ionicons.grid_outline,
                                   size: 16,
                                   color: Colors.grey,
                                 ),
@@ -256,7 +257,7 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.location_on, color: Colors.grey[600]),
+                              Icon(Ionicons.location_outline, color: Colors.grey[600]),
                               const SizedBox(width: 8),
                               const Text('Deliver to: Set location'),
                             ],
@@ -271,7 +272,7 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                           onPressed: () {},
                         ),
                         IconButton(
-                          icon: const Icon(Icons.favorite_border),
+                          icon: const Icon(Ionicons.heart_outline_border),
                           onPressed: () {},
                         ),
                         
@@ -477,9 +478,9 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                                   children: [
                                     _buildTag(Icons.power, widget.company['capacity']),
                                     const SizedBox(width: 24),
-                                    _buildTag(Icons.location_on, widget.company['location']),
+                                    _buildTag(Ionicons.location_outline, widget.company['location']),
                                     const SizedBox(width: 24),
-                                    _buildTag(Icons.person, widget.company['units']),
+                                    _buildTag(Ionicons.person_outline, widget.company['units']),
                                   ],
                                 ),
                               ],
@@ -700,8 +701,8 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                                       
                                       // Details
                                       _buildInfoRow(Icons.calendar_today, 'Established: 1975'),
-                                      _buildInfoRow(Icons.person, 'Founder: Government of India'),
-                                      _buildInfoRow(Icons.location_on, 'Headquarters: New Delhi, India'),
+                                      _buildInfoRow(Ionicons.person_outline, 'Founder: Government of India'),
+                                      _buildInfoRow(Ionicons.location_outline, 'Headquarters: New Delhi, India'),
                                       _buildInfoRow(Icons.phone, 'Phone: +91-11-2345-6789'),
                                       _buildInfoRow(Icons.email, 'Email: info@ntpc.co.in'),
                                     ],
@@ -734,7 +735,7 @@ class _D_CompanyDetailsScreenState extends State<D_CompanyDetailsScreen> {
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.person,
+                                            Ionicons.person_outline,
                                             color: Colors.blue[600],
                                             size: 24,
                                           ),

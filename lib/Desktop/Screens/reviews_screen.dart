@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 
@@ -122,7 +123,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         child: Center(
                           child: Text(
                             'V',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -133,7 +134,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       const SizedBox(width: 12),
                       Text(
                         'Vidyut Nidhi',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue[800],
@@ -150,20 +151,20 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders'),
-                        _buildNavItem(Icons.favorite, 'Wishlist'),
-                        _buildNavItem(Icons.shopping_cart, 'Shopping Cart'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders'),
+                        _buildNavItem(Ionicons.heart_outline, 'Wishlist'),
+                        _buildNavItem(Ionicons.cart_outline, 'Shopping Cart'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -185,7 +186,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         backgroundColor: Colors.blue[800],
                         child: Text(
                           'JD',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -198,14 +199,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           children: [
                             Text(
                               'John Doe',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.grey[900],
                               ),
                             ),
                             Text(
                               'john.doe@email.com',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 12,
                                 color: Colors.grey[600],
                               ),
@@ -251,7 +252,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           children: [
                             Text(
                               'Customer Reviews',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[900],
@@ -259,7 +260,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                             ),
                             Text(
                               widget.product['name'],
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 16,
                                 color: Colors.grey[600],
                               ),
@@ -272,7 +273,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         icon: const Icon(Icons.edit),
                         label: Text(
                           'Write Review',
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                          style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue[800],
@@ -303,7 +304,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       // Sort dropdown
                       Text(
                         'Sort by:',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[700],
                         ),
@@ -312,7 +313,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       DropdownButton<String>(
                         value: _selectedSortBy,
                         underline: Container(),
-                        style: GoogleFonts.inter(color: Colors.grey[700]),
+                        style: GoogleFonts.manrope(color: Colors.grey[700]),
                         items: [
                           'Most Recent',
                           'Most Helpful',
@@ -321,7 +322,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         ].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value, style: GoogleFonts.inter()),
+                            child: Text(value, style: GoogleFonts.manrope()),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -338,7 +339,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       // Rating filter
                       Text(
                         'Rating:',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[700],
                         ),
@@ -347,7 +348,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       DropdownButton<String>(
                         value: _selectedRatingFilter,
                         underline: Container(),
-                        style: GoogleFonts.inter(color: Colors.grey[700]),
+                        style: GoogleFonts.manrope(color: Colors.grey[700]),
                         items: [
                           'All Ratings',
                           '5 Stars',
@@ -358,7 +359,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                         ].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
-                            child: Text(value, style: GoogleFonts.inter()),
+                            child: Text(value, style: GoogleFonts.manrope()),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -386,7 +387,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           ),
                           Text(
                             'Verified purchases only',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontSize: 14,
                               color: Colors.grey[700],
                             ),
@@ -420,7 +421,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         ),
         title: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: isActive ? Colors.blue[800] : Colors.grey[700],
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -459,7 +460,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 children: [
                   Text(
                     averageRating.toStringAsFixed(1),
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[900],
@@ -472,7 +473,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       _buildStarRating(averageRating, size: 24),
                       Text(
                         'Based on $totalReviews reviews',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 14,
                           color: Colors.grey[600],
                         ),
@@ -508,7 +509,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
       children: [
         Text(
           '$rating',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: Colors.grey[700],
@@ -539,7 +540,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         const SizedBox(width: 8),
         Text(
           '$count',
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             fontSize: 14,
             color: Colors.grey[600],
           ),
@@ -623,7 +624,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 backgroundColor: Colors.blue[800],
                 child: Text(
                   review['userAvatar'],
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -638,7 +639,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                       children: [
                         Text(
                           review['userName'],
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             fontWeight: FontWeight.w600,
                             color: Colors.grey[900],
                           ),
@@ -653,7 +654,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                             ),
                             child: Text(
                               'Verified Purchase',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: 10,
                                 color: Colors.green[700],
                                 fontWeight: FontWeight.w600,
@@ -665,7 +666,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                     ),
                     Text(
                       _formatDate(review['date']),
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: 12,
                         color: Colors.grey[600],
                       ),
@@ -682,7 +683,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           // Review Title
           Text(
             review['title'],
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.grey[900],
@@ -694,7 +695,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           // Review Comment
           Text(
             review['comment'],
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 14,
               color: Colors.grey[700],
               height: 1.5,
@@ -711,7 +712,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 icon: const Icon(Icons.thumb_up_outlined, size: 16),
                 label: Text(
                   'Helpful (${review['helpful']})',
-                  style: GoogleFonts.inter(fontSize: 12),
+                  style: GoogleFonts.manrope(fontSize: 12),
                 ),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -723,7 +724,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 icon: const Icon(Icons.flag_outlined, size: 16),
                 label: Text(
                   'Report',
-                  style: GoogleFonts.inter(fontSize: 12),
+                  style: GoogleFonts.manrope(fontSize: 12),
                 ),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -751,7 +752,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Thank you for your feedback!', style: GoogleFonts.inter()),
+        content: Text('Thank you for your feedback!', style: GoogleFonts.manrope()),
         backgroundColor: Colors.green[600],
       ),
     );
@@ -764,18 +765,18 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
         return AlertDialog(
           title: Text(
             'Report Review',
-            style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+            style: GoogleFonts.manrope(fontWeight: FontWeight.bold),
           ),
           content: Text(
             'Are you sure you want to report this review? Our team will review it and take appropriate action.',
-            style: GoogleFonts.inter(),
+            style: GoogleFonts.manrope(),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancel',
-                style: GoogleFonts.inter(color: Colors.grey[600]),
+                style: GoogleFonts.manrope(color: Colors.grey[600]),
               ),
             ),
             TextButton(
@@ -783,14 +784,14 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Review reported successfully', style: GoogleFonts.inter()),
+                    content: Text('Review reported successfully', style: GoogleFonts.manrope()),
                     backgroundColor: Colors.blue[800],
                   ),
                 );
               },
               child: Text(
                 'Report',
-                style: GoogleFonts.inter(color: Colors.red[600]),
+                style: GoogleFonts.manrope(color: Colors.red[600]),
               ),
             ),
           ],
@@ -852,7 +853,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 children: [
                   Text(
                     'Write a Review',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[900],
@@ -896,14 +897,14 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                         children: [
                           Text(
                             widget.product['name'],
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontWeight: FontWeight.w600,
                               color: Colors.grey[900],
                             ),
                           ),
                           Text(
                             widget.product['description'],
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontSize: 12,
                               color: Colors.grey[600],
                             ),
@@ -920,7 +921,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
               // Rating
               Text(
                 'Your Rating',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey[900],
@@ -951,7 +952,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 controller: _titleController,
                 decoration: InputDecoration(
                   labelText: 'Review Title',
-                  labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                  labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: Colors.blue[300]!),
@@ -977,7 +978,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                 maxLines: 4,
                 decoration: InputDecoration(
                   labelText: 'Your Review',
-                  labelStyle: GoogleFonts.inter(color: Colors.grey[600]),
+                  labelStyle: GoogleFonts.manrope(color: Colors.grey[600]),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: Colors.blue[300]!),
@@ -1008,7 +1009,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
                         'Cancel',
-                        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                        style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -1030,7 +1031,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
                             )
                           : Text(
                               'Submit Review',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
@@ -1061,7 +1062,7 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Thank you for your review!', style: GoogleFonts.inter()),
+            content: Text('Thank you for your review!', style: GoogleFonts.manrope()),
             backgroundColor: Colors.green[600],
           ),
         );
@@ -1069,13 +1070,18 @@ class _WriteReviewDialogState extends State<WriteReviewDialog> {
     } else if (_rating == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please select a rating', style: GoogleFonts.inter()),
+          content: Text('Please select a rating', style: GoogleFonts.manrope()),
           backgroundColor: Colors.red[600],
         ),
       );
     }
   }
 }
+
+
+
+
+
 
 
 

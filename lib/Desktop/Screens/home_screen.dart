@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'search_products_screen.dart';
 import 'orders_screen.dart';
@@ -14,7 +15,13 @@ import 'cart_screen.dart';
 import 'wishlist_screen.dart';
 import 'browse_brands_screen.dart';
 import 'state_info_screen.dart';
+import 'product_details_screen.dart';
+import 'admin_login_screen.dart';
+import 'seller_onboarding_screen.dart';
+import 'payment_screen.dart';
+import 'order_tracking_screen.dart';
 import '../Components/responsive_helper.dart';
+import '../Components/unified_navigation.dart';
 
 class D_HomeScreen extends StatefulWidget {
   const D_HomeScreen({super.key});
@@ -27,6 +34,18 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
   bool _isSidebarVisible = true;
   int _currentSlideIndex = 0;
   late PageController _pageController;
+  final ScrollController _categoriesScrollController = ScrollController();
+  bool _categoriesAutoScrollRunning = false;
+  final ScrollController _featuredScrollController = ScrollController();
+  bool _featuredAutoScrollRunning = false;
+  final List<Map<String, Object>> _categories = [
+    {'name': 'Wires & Cables', 'icon': Icons.cable, 'color': Colors.blue, 'image': 'assets/images/Categories/plug.png'},
+    {'name': 'Switches', 'icon': Ionicons.toggle_outline, 'color': Colors.green, 'image': 'assets/images/Categories/meters.png'},
+    {'name': 'Lights', 'icon': Ionicons.bulb_outline, 'color': Colors.orange, 'image': 'assets/images/Categories/blubs.jpeg'},
+    {'name': 'Motors', 'icon': Ionicons.settings_outline, 'color': Colors.purple, 'image': 'assets/images/Categories/electric_motors_with_white_bg.jpeg'},
+    {'name': 'Panels', 'icon': Ionicons.grid_outline, 'color': Colors.red, 'image': 'assets/images/Categories/solar.png'},
+    {'name': 'Safety Tools', 'icon': Icons.build, 'color': Colors.teal, 'image': 'assets/images/Categories/image.png'},
+  ];
 
   // Slideshow images
   final List<String> _slideshowImages = [
@@ -48,6 +67,8 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
   @override
   void dispose() {
     _pageController.dispose();
+    _categoriesScrollController.dispose();
+    _featuredScrollController.dispose();
     super.dispose();
   }
 
@@ -69,6 +90,12 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
     });
   }
 
+  // Slideshow scrolling disabled for categories
+
+  // Slideshow scrolling disabled for featured products
+
+  int get _featuredProductsCount => 14;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,20 +112,14 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
   Widget _buildMobileLayout(BuildContext context) {
     return Column(
       children: [
-        // Mobile Header
-        Container(
-          padding: EdgeInsets.all(ResponsiveHelper.getResponsivePadding(context, mobile: 12, tablet: 16, desktop: 20)),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
+        // Unified Navigation
+        UnifiedNavigation(
+          currentPage: 'home',
+          isMobile: true,
+        ),
+        
+        // Content
+        Expanded(
           child: Column(
             children: [
               // Logo and Menu
@@ -125,7 +146,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                       const SizedBox(width: 8),
                       Text(
                         'Vidyut',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue[800],
@@ -136,7 +157,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.search),
+                        icon: const Icon(Ionicons.search_outline),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -145,7 +166,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.shopping_cart),
+                        icon: const Icon(Ionicons.cart_outline),
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -187,9 +208,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             value: 'profile',
                             child: Row(
                               children: [
-                                Icon(Icons.person, color: Colors.grey[600], size: 20),
+                                Icon(Ionicons.person_outline, color: Colors.grey[600], size: 20),
                                 const SizedBox(width: 12),
-                                Text('My Profile', style: GoogleFonts.inter(fontSize: 14)),
+                                Text('My Profile', style: GoogleFonts.manrope(fontSize: 14)),
                               ],
                             ),
                           ),
@@ -197,9 +218,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             value: 'orders',
                             child: Row(
                               children: [
-                                Icon(Icons.shopping_bag, color: Colors.grey[600], size: 20),
+                                Icon(Ionicons.bag_outline, color: Colors.grey[600], size: 20),
                                 const SizedBox(width: 12),
-                                Text('My Orders', style: GoogleFonts.inter(fontSize: 14)),
+                                Text('My Orders', style: GoogleFonts.manrope(fontSize: 14)),
                               ],
                             ),
                           ),
@@ -207,9 +228,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             value: 'wishlist',
                             child: Row(
                               children: [
-                                Icon(Icons.favorite, color: Colors.grey[600], size: 20),
+                                Icon(Ionicons.heart_outline, color: Colors.grey[600], size: 20),
                                 const SizedBox(width: 12),
-                                Text('Wishlist', style: GoogleFonts.inter(fontSize: 14)),
+                                Text('Wishlist', style: GoogleFonts.manrope(fontSize: 14)),
                               ],
                             ),
                           ),
@@ -218,9 +239,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             value: 'settings',
                             child: Row(
                               children: [
-                                Icon(Icons.settings, color: Colors.grey[600], size: 20),
+                                Icon(Ionicons.settings_outline, color: Colors.grey[600], size: 20),
                                 const SizedBox(width: 12),
-                                Text('Settings', style: GoogleFonts.inter(fontSize: 14)),
+                                Text('Settings', style: GoogleFonts.manrope(fontSize: 14)),
                               ],
                             ),
                           ),
@@ -228,9 +249,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             value: 'logout',
                             child: Row(
                               children: [
-                                Icon(Icons.logout, color: Colors.red[600], size: 20),
+                                Icon(Ionicons.log_out_outline, color: Colors.red[600], size: 20),
                                 const SizedBox(width: 12),
-                                Text('Logout', style: GoogleFonts.inter(fontSize: 14, color: Colors.red[600])),
+                                Text('Logout', style: GoogleFonts.manrope(fontSize: 14, color: Colors.red[600])),
                               ],
                             ),
                           ),
@@ -240,7 +261,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                           backgroundColor: Colors.blue[800],
                           child: Text(
                             'JD',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
@@ -253,27 +274,45 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 ],
               ),
               const SizedBox(height: 12),
-              // Mobile Search Bar
+              // Mobile Search Bar (same style/behavior as search page)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.search, color: Colors.grey[600], size: 20),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Search for electrical products...',
-                        style: GoogleFonts.inter(
-                          color: Colors.grey[600],
-                          fontSize: 14,
-                        ),
-                      ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFFF1F5F9), width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1E293B).withOpacity(0.04),
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: const Offset(0, 4),
                     ),
                   ],
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search products, brands, or sellers...',
+                    hintStyle: GoogleFonts.manrope(color: const Color(0xFF94A3B8)),
+                    prefixIcon: const Icon(Ionicons.search_outline, color: Color(0xFF64748B)),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  ),
+                  onSubmitted: (value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const D_SearchProductsScreen(),
+                      ),
+                    );
+                  },
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const D_SearchProductsScreen(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -288,13 +327,12 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
   }
 
   Widget _buildTabletLayout(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        // Tablet Sidebar
-        Container(
-          width: 200,
-          color: Colors.white,
-          child: _buildSidebar(context, isMobile: false),
+        // Unified Navigation
+        UnifiedNavigation(
+          currentPage: 'home',
+          isMobile: false,
         ),
         // Tablet Main Content
         Expanded(
@@ -305,13 +343,12 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
   }
 
   Widget _buildDesktopLayout(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        // Desktop Sidebar
-        Container(
-          width: 280,
-          color: Colors.white,
-          child: _buildSidebar(context, isMobile: false),
+        // Unified Navigation
+        UnifiedNavigation(
+          currentPage: 'home',
+          isMobile: false,
         ),
         // Desktop Main Content
         Expanded(
@@ -347,7 +384,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               const SizedBox(width: 12),
               Text(
                 'Vidyut',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   fontSize: isMobile ? 18 : 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[800],
@@ -364,22 +401,29 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildNavItem(Icons.home, 'Home'),
-                _buildNavItem(Icons.search, 'Search Products'),
-                _buildNavItem(Icons.shopping_bag, 'My Orders'),
-                _buildNavItem(Icons.favorite, 'Wishlist'),
-                _buildNavItem(Icons.shopping_cart, 'Shopping Cart'),
-                _buildNavItem(Icons.store, 'Sell'),
+                _buildNavItem(Ionicons.home_outline, 'Home'),
+                _buildNavItem(Ionicons.search_outline, 'Search Products'),
+                _buildNavItem(Ionicons.bag_outline, 'My Orders'),
+                _buildNavItem(Ionicons.heart_outline, 'Wishlist'),
+                _buildNavItem(Ionicons.cart_outline, 'Shopping Cart'),
+                _buildNavItem(Ionicons.storefront_outline, 'Sell'),
                 _buildNavItem(Icons.groups_2, 'B2B Leads'),
-                _buildNavItem(Icons.message, 'Messages'),
-                _buildNavItem(Icons.location_on, 'State Info'),
+                _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                _buildNavItem(Ionicons.location_outline, 'State Info'),
                 _buildNavItem(Icons.trending_up, 'Trending'),
                 
                 const SizedBox(height: 30),
                 
                 // Account Section
-                _buildNavItem(Icons.settings, 'Settings'),
+                _buildNavItem(Ionicons.settings_outline, 'Settings'),
                 _buildNavItem(Icons.help, 'Help'),
+                
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 10),
+                
+                // Admin Access
+                _buildAdminNavItem(),
               ],
             ),
           ),
@@ -400,7 +444,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 backgroundColor: Colors.blue[800],
                 child: Text(
                   'JD',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: isMobile ? 12 : 14,
@@ -414,7 +458,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                   children: [
                     Text(
                       'John Doe',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[900],
                         fontSize: isMobile ? 12 : 14,
@@ -422,7 +466,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                     ),
                     Text(
                       'john.doe@email.com',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: isMobile ? 10 : 12,
                         color: Colors.grey[600],
                       ),
@@ -459,7 +503,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               if (ResponsiveHelper.isMobile(context)) ...[
                 // Mobile menu button
                 IconButton(
-                  icon: const Icon(Icons.menu),
+                  icon: const Icon(Ionicons.menu_outline),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
@@ -472,7 +516,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                   children: [
                     Text(
                       'Welcome to Vidyut Nidhi',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 20, tablet: 24, desktop: 28),
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[900],
@@ -480,7 +524,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                     ),
                     Text(
                       'Your trusted electrical products marketplace',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 12, tablet: 14, desktop: 16),
                         color: Colors.grey[600],
                       ),
@@ -501,12 +545,12 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.search, color: Colors.grey[600], size: 20),
+                        Icon(Ionicons.search_outline, color: Colors.grey[600], size: 20),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             'Search for electrical products...',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               color: Colors.grey[600],
                               fontSize: 14,
                             ),
@@ -529,7 +573,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                   },
                   child: Text(
                     'Sign In',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Colors.blue[800],
@@ -553,7 +597,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                   ),
                   child: Text(
                     'Sign Up',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.manrope(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
@@ -597,11 +641,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                       value: 'profile',
                       child: Row(
                         children: [
-                          Icon(Icons.person, color: Colors.grey[600], size: 20),
+                          Icon(Ionicons.person_outline, color: Colors.grey[600], size: 20),
                           const SizedBox(width: 12),
                           Text(
                             'My Profile',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.manrope(fontSize: 14),
                           ),
                         ],
                       ),
@@ -610,11 +654,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                       value: 'orders',
                       child: Row(
                         children: [
-                          Icon(Icons.shopping_bag, color: Colors.grey[600], size: 20),
+                          Icon(Ionicons.bag_outline, color: Colors.grey[600], size: 20),
                           const SizedBox(width: 12),
                           Text(
                             'My Orders',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.manrope(fontSize: 14),
                           ),
                         ],
                       ),
@@ -623,11 +667,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                       value: 'wishlist',
                       child: Row(
                         children: [
-                          Icon(Icons.favorite, color: Colors.grey[600], size: 20),
+                          Icon(Ionicons.heart_outline, color: Colors.grey[600], size: 20),
                           const SizedBox(width: 12),
                           Text(
                             'Wishlist',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.manrope(fontSize: 14),
                           ),
                         ],
                       ),
@@ -637,11 +681,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                       value: 'settings',
                       child: Row(
                         children: [
-                          Icon(Icons.settings, color: Colors.grey[600], size: 20),
+                          Icon(Ionicons.settings_outline, color: Colors.grey[600], size: 20),
                           const SizedBox(width: 12),
                           Text(
                             'Settings',
-                            style: GoogleFonts.inter(fontSize: 14),
+                            style: GoogleFonts.manrope(fontSize: 14),
                           ),
                         ],
                       ),
@@ -650,11 +694,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                       value: 'logout',
                       child: Row(
                         children: [
-                          Icon(Icons.logout, color: Colors.red[600], size: 20),
+                          Icon(Ionicons.log_out_outline, color: Colors.red[600], size: 20),
                           const SizedBox(width: 12),
                           Text(
                             'Logout',
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.manrope(
                               fontSize: 14,
                               color: Colors.red[600],
                             ),
@@ -668,7 +712,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                     backgroundColor: Colors.blue[800],
                     child: Text(
                       'JD',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -699,7 +743,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           // Categories Section
           Text(
             'Categories',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 18, tablet: 20, desktop: 24),
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
@@ -713,7 +757,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           // Featured Products
           Text(
             'Featured Products',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 18, tablet: 20, desktop: 24),
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
@@ -765,8 +809,8 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "India's Largest\n",
-                                style: GoogleFonts.inter(
+                                text: "India's First\n",
+                                style: GoogleFonts.manrope(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey[800],
@@ -774,7 +818,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                               ),
                               TextSpan(
                                 text: "Electricity ",
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.blue[600],
@@ -782,7 +826,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                               ),
                               TextSpan(
                                 text: "Information\n",
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.purple[600],
@@ -790,7 +834,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                               ),
                               TextSpan(
                                 text: "Platform for B2B, D2C and C2C",
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.grey[600],
@@ -802,8 +846,9 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                         const SizedBox(height: 20),
                         Text(
                           'Produced by Madhu Powertech Private Limited',
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
+                          style: GoogleFonts.manrope(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                             color: Colors.grey[500],
                           ),
                         ),
@@ -845,8 +890,8 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "India's Largest\n",
-                                  style: GoogleFonts.inter(
+                                  text: "India's First\n",
+                                  style: GoogleFonts.manrope(
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey[800],
@@ -854,7 +899,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                                 ),
                                 TextSpan(
                                   text: "Electricity ",
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue[600],
@@ -862,7 +907,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                                 ),
                                 TextSpan(
                                   text: "Information\n",
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 36,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.purple[600],
@@ -870,10 +915,10 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                                 ),
                                 TextSpan(
                                   text: "Platform for B2B, D2C and C2C",
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.manrope(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.grey[600],
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -882,9 +927,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                           const SizedBox(height: 20),
                           Text(
                             'Produced by Madhu Powertech Private Limited',
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: Colors.grey[500],
+                            style: GoogleFonts.manrope(
+                              fontSize: 18,
+                          
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
                           ),
                           const SizedBox(height: 40),
@@ -908,7 +955,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           // Categories Section
           Text(
             'Categories',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 18, tablet: 20, desktop: 24),
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
@@ -922,7 +969,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           // Featured Products
           Text(
             'Featured Products',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 18, tablet: 20, desktop: 24),
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
@@ -940,21 +987,25 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
     );
   }
 
-  Widget _buildCategoriesGrid(BuildContext context) {
-    final categories = [
-      {'name': 'Wires & Cables', 'icon': Icons.cable, 'color': Colors.blue[600]!, 'image': 'assets/images/Categories/plug.png'},
-      {'name': 'Switches', 'icon': Icons.toggle_on, 'color': Colors.green[600]!, 'image': 'assets/images/Categories/meters.png'},
-      {'name': 'Lights', 'icon': Icons.lightbulb, 'color': Colors.orange[600]!, 'image': 'assets/images/Categories/blubs.jpeg'},
-      {'name': 'Motors', 'icon': Icons.settings, 'color': Colors.purple[600]!, 'image': 'assets/images/Categories/industry.png'},
-      {'name': 'Panels', 'icon': Icons.dashboard, 'color': Colors.red[600]!, 'image': 'assets/images/Categories/energy.png'},
-      {'name': 'Tools', 'icon': Icons.build, 'color': Colors.teal[600]!, 'image': 'assets/images/Categories/batteries.png'},
-    ];
+  Widget _buildCategoriesCarousel(BuildContext context) {
+    final cardWidth = ResponsiveHelper.isMobile(context) ? 220.0 : 240.0;
 
+    // Revert to grid view rendering for categories (no slideshow)
+    return _buildCategoriesGrid(context);
+  }
+
+  Widget _buildCategoriesGrid(BuildContext context) {
+    final categories = _categories;
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: ResponsiveHelper.getResponsiveColumns(context, mobile: 2, tablet: 3, desktop: 6),
+        crossAxisCount: ResponsiveHelper.getResponsiveColumns(
+          context,
+          mobile: 2,
+          tablet: 3,
+          desktop: 6,
+        ),
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
         childAspectRatio: ResponsiveHelper.isMobile(context) ? 1.2 : 1.0,
@@ -967,7 +1018,14 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
             _navigateToCategoryProducts(category['name'] as String);
           },
           child: Container(
-            padding: EdgeInsets.all(ResponsiveHelper.getResponsivePadding(context, mobile: 12, tablet: 16, desktop: 20)),
+            padding: EdgeInsets.all(
+              ResponsiveHelper.getResponsivePadding(
+                context,
+                mobile: 12,
+                tablet: 16,
+                desktop: 20,
+              ),
+            ),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -981,53 +1039,58 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               ],
             ),
             child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: ResponsiveHelper.isMobile(context) ? 40 : 50,
-                height: ResponsiveHelper.isMobile(context) ? 40 : 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey[200]!, width: 1),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    category['image'] as String,
-                    width: ResponsiveHelper.isMobile(context) ? 40 : 50,
-                    height: ResponsiveHelper.isMobile(context) ? 40 : 50,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: category['color'] as Color,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          category['icon'] as IconData,
-                          color: Colors.white,
-                          size: ResponsiveHelper.isMobile(context) ? 20 : 24,
-                        ),
-                      );
-                    },
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: ResponsiveHelper.isMobile(context) ? 40 : 50,
+                  height: ResponsiveHelper.isMobile(context) ? 40 : 50,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey[200]!, width: 1),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      category['image'] as String,
+                      width: ResponsiveHelper.isMobile(context) ? 40 : 50,
+                      height: ResponsiveHelper.isMobile(context) ? 40 : 50,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: (category['color'] as Color).withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            category['icon'] as IconData,
+                            color: Colors.white,
+                            size: ResponsiveHelper.isMobile(context) ? 20 : 24,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                category['name'] as String,
-                style: GoogleFonts.inter(
-                  fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 12, tablet: 14, desktop: 16),
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[900],
+                const SizedBox(height: 12),
+                Text(
+                  category['name'] as String,
+                  style: GoogleFonts.manrope(
+                    fontSize: ResponsiveHelper.getResponsiveFontSize(
+                      context,
+                      mobile: 12,
+                      tablet: 14,
+                      desktop: 16,
+                    ),
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[900],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
+        );
       },
     );
   }
@@ -1076,30 +1139,119 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
         'image': 'assets/images/lights/event_lights_60w_single_white_bg.jpeg',
         'discount': '18% OFF',
       },
+      {
+        'name': 'LED Street Light',
+        'price': '₹1,499',
+        'rating': 4.5,
+        'image': 'assets/images/lights/street_light_60w_single_white_bg.jpeg',
+        'discount': '22% OFF',
+      },
+      {
+        'name': 'Three-Core Cable',
+        'price': '₹240/m',
+        'rating': 4.2,
+        'image': 'assets/images/wires-and-cables/wires2.jpeg',
+        'discount': '8% OFF',
+      },
+      {
+        'name': 'Industrial Motor 2HP',
+        'price': '₹8,990',
+        'rating': 4.6,
+        'image': 'assets/images/motors/motor1.jpeg',
+        'discount': '14% OFF',
+      },
+      {
+        'name': 'Distribution Panel',
+        'price': '₹12,500',
+        'rating': 4.7,
+        'image': 'assets/images/panels/panel1.jpeg',
+        'discount': '16% OFF',
+      },
+      {
+        'name': 'Solar Charge Controller',
+        'price': '₹1,899',
+        'rating': 4.4,
+        'image': 'assets/images/transformer/solar_controller.jpeg',
+        'discount': '10% OFF',
+      },
+      {
+        'name': 'Insulated Screwdriver Set',
+        'price': '₹399',
+        'rating': 4.3,
+        'image': 'assets/images/tools/tool1.jpeg',
+        'discount': '19% OFF',
+      },
+      {
+        'name': 'PVC Conduit 25mm',
+        'price': '₹45/m',
+        'rating': 4.1,
+        'image': 'assets/images/conduits/conduit1.jpeg',
+        'discount': '9% OFF',
+      },
+      {
+        'name': 'Safety Gloves',
+        'price': '₹199',
+        'rating': 4.2,
+        'image': 'assets/images/safety/safety1.jpeg',
+        'discount': '11% OFF',
+      },
     ];
 
     return SizedBox(
       height: ResponsiveHelper.isMobile(context) ? 180 : 220,
-      child: ListView.builder(
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: products.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 16),
         itemBuilder: (context, index) {
           final product = products[index];
-          return Container(
-            width: ResponsiveHelper.isMobile(context) ? 150 : 180,
-            margin: const EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
+          return GestureDetector(
+            onTap: () {
+              // Create a product map with all necessary fields for ProductDetailsScreen
+              final productData = {
+                'name': product['name'],
+                'price': product['price'],
+                'rating': product['rating'],
+                'image': product['image'],
+                'discount': product['discount'],
+                'seller': 'ElectroMart', // Default seller for featured products
+                'category': _getCategoryFromProduct(product['name'] as String),
+                'description': _getProductDescription(product['name'] as String),
+                'specifications': _getProductSpecifications(product['name'] as String),
+              };
+              
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailsScreen(
+                    product: productData,
+                    allProducts: products.map((p) => {
+                      'name': p['name'],
+                      'price': p['price'],
+                      'rating': p['rating'],
+                      'image': p['image'],
+                      'discount': p['discount'],
+                      'seller': 'ElectroMart',
+                      'category': _getCategoryFromProduct(p['name'] as String),
+                    }).toList(),
+                  ),
                 ),
-              ],
-            ),
+              );
+            },
+            child: Container(
+              width: ResponsiveHelper.isMobile(context) ? 150 : 180,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1144,7 +1296,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             Expanded(
                               child: Text(
                                 product['name'] as String,
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                   fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 11, tablet: 13, desktop: 15),
                                   fontWeight: FontWeight.w600,
                                   color: Colors.grey[900],
@@ -1161,7 +1313,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                               ),
                               child: Text(
                                 product['discount'] as String,
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.manrope(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red[700],
@@ -1173,7 +1325,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                         const SizedBox(height: 2),
                         Text(
                           product['price'] as String,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.manrope(
                             fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 11, tablet: 13, desktop: 15),
                             fontWeight: FontWeight.bold,
                             color: Colors.blue[800],
@@ -1190,7 +1342,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                             const SizedBox(width: 2),
                             Text(
                               product['rating'].toString(),
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.manrope(
                                 fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 9, tablet: 11, desktop: 11),
                                 color: Colors.grey[600],
                               ),
@@ -1203,6 +1355,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 ),
               ],
             ),
+            ),
           );
         },
       ),
@@ -1211,14 +1364,14 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
 
   Widget _buildStatsSection(BuildContext context) {
     final stats = [
-      {'number': '10K+', 'label': 'Products'},
-      {'number': '500+', 'label': 'Suppliers'},
-      {'number': '50K+', 'label': 'Customers'},
-      {'number': '99%', 'label': 'Satisfaction'},
-      {'number': '120+', 'label': 'Cities Covered'},
-      {'number': '24x7', 'label': 'Support'},
-      {'number': '1.2M+', 'label': 'Monthly Views'},
-      {'number': '4.8/5', 'label': 'Average Rating'},
+      {'number': '10K+', 'label': 'Products', 'targetValue': 10000, 'icon': Icons.inventory_2_outlined},
+      {'number': '500+', 'label': 'Suppliers', 'targetValue': 500, 'icon': Icons.business_outlined},
+      {'number': '50K+', 'label': 'Customers', 'targetValue': 50000, 'icon': Icons.people_outline},
+      {'number': '99%', 'label': 'Satisfaction', 'targetValue': 99, 'icon': Icons.sentiment_very_satisfied_outlined},
+      {'number': '120+', 'label': 'Cities Covered', 'targetValue': 120, 'icon': Icons.location_city_outlined},
+      {'number': '24x7', 'label': 'Support', 'targetValue': 24, 'icon': Icons.support_agent_outlined},
+      {'number': '1.2M+', 'label': 'Monthly Views', 'targetValue': 1200000, 'icon': Icons.visibility_outlined},
+      {'number': '4.8/5', 'label': 'Average Rating', 'targetValue': 4.8, 'icon': Icons.star_outline},
     ];
 
     return Container(
@@ -1229,13 +1382,26 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
       ),
       child: Column(
         children: [
-          Text(
-            'Trusted by Thousands',
-            style: GoogleFonts.inter(
-              fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 18, tablet: 20, desktop: 24),
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          // Animated title
+          TweenAnimationBuilder<double>(
+            duration: const Duration(milliseconds: 1000),
+            tween: Tween(begin: 0.0, end: 1.0),
+            builder: (context, value, child) {
+              return Transform.scale(
+                scale: value,
+                child: Opacity(
+                  opacity: value,
+                  child: Text(
+                    'Trusted by Thousands',
+                    style: GoogleFonts.manrope(
+                      fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 18, tablet: 20, desktop: 24),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 20),
           GridView.builder(
@@ -1249,34 +1415,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
             itemCount: stats.length,
             itemBuilder: (context, index) {
               final stat = stats[index];
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.06),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
-                child: Column(
-                  children: [
-                    Text(
-                      stat['number'] as String,
-                      style: GoogleFonts.inter(
-                        fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 22, tablet: 26, desktop: 30),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      stat['label'] as String,
-                      style: GoogleFonts.inter(
-                        fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 12, tablet: 14, desktop: 16),
-                        color: Colors.white70,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
+              return _buildAnimatedStatCard(context, stat, index);
             },
           ),
           const SizedBox(height: 16),
@@ -1285,15 +1424,29 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const D_SearchProductsScreen(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.blue[800]),
-                child: Text('Explore Products', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+                child: Text('Explore Products', style: GoogleFonts.manrope(fontWeight: FontWeight.w600)),
               ),
               const SizedBox(width: 12),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SellerOnboardingScreen(),
+                    ),
+                  );
+                },
                 style: OutlinedButton.styleFrom(foregroundColor: Colors.white, side: const BorderSide(color: Colors.white70)),
-                child: Text('Become a Seller', style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: Colors.white)),
+                child: Text('Become a Seller', style: GoogleFonts.manrope(fontWeight: FontWeight.w600, color: Colors.white)),
               ),
             ],
           ),
@@ -1398,7 +1551,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           const SizedBox(height: 8),
           Text(
             number,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: color,
@@ -1407,7 +1560,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
           const SizedBox(height: 4),
           Text(
             label,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontSize: 12,
               color: Colors.grey[600],
               fontWeight: FontWeight.w500,
@@ -1642,7 +1795,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
         ),
         title: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: isActive ? Colors.blue[800] : Colors.grey[700],
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -1711,7 +1864,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
         return AlertDialog(
           title: Text(
             'Settings',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
             ),
@@ -1723,11 +1876,11 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 leading: Icon(Icons.notifications, color: Colors.blue[800]),
                 title: Text(
                   'Notifications',
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                  style: GoogleFonts.manrope(fontWeight: FontWeight.w500),
                 ),
                 subtitle: Text(
                   'Manage your notification preferences',
-                  style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                  style: GoogleFonts.manrope(fontSize: 12, color: Colors.grey[600]),
                 ),
                 trailing: Switch(
                   value: true,
@@ -1739,17 +1892,17 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 leading: Icon(Icons.privacy_tip, color: Colors.blue[800]),
                 title: Text(
                   'Privacy',
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                  style: GoogleFonts.manrope(fontWeight: FontWeight.w500),
                 ),
                 subtitle: Text(
                   'Control your privacy settings',
-                  style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                  style: GoogleFonts.manrope(fontSize: 12, color: Colors.grey[600]),
                 ),
                 onTap: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Privacy settings coming soon!', style: GoogleFonts.inter()),
+                      content: Text('Privacy settings coming soon!', style: GoogleFonts.manrope()),
                       backgroundColor: Colors.blue[800],
                     ),
                   );
@@ -1759,17 +1912,17 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 leading: Icon(Icons.help, color: Colors.blue[800]),
                 title: Text(
                   'Help & Support',
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                  style: GoogleFonts.manrope(fontWeight: FontWeight.w500),
                 ),
                 subtitle: Text(
                   'Get help and contact support',
-                  style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                  style: GoogleFonts.manrope(fontSize: 12, color: Colors.grey[600]),
                 ),
                 onTap: () {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Help center coming soon!', style: GoogleFonts.inter()),
+                      content: Text('Help center coming soon!', style: GoogleFonts.manrope()),
                       backgroundColor: Colors.blue[800],
                     ),
                   );
@@ -1782,7 +1935,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Close',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.w600,
                 ),
@@ -1801,21 +1954,21 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
         return AlertDialog(
           title: Text(
             'Logout',
-            style: GoogleFonts.inter(
+            style: GoogleFonts.manrope(
               fontWeight: FontWeight.bold,
               color: Colors.grey[900],
             ),
           ),
           content: Text(
             'Are you sure you want to logout? You will need to sign in again to access your account.',
-            style: GoogleFonts.inter(color: Colors.grey[700]),
+            style: GoogleFonts.manrope(color: Colors.grey[700]),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancel',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.manrope(
                   color: Colors.grey[600],
                   fontWeight: FontWeight.w600,
                 ),
@@ -1826,7 +1979,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Logged out successfully!', style: GoogleFonts.inter()),
+                    content: Text('Logged out successfully!', style: GoogleFonts.manrope()),
                     backgroundColor: Colors.green[600],
                   ),
                 );
@@ -1837,7 +1990,7 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
               ),
               child: Text(
                 'Logout',
-                style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -1847,11 +2000,300 @@ class _D_HomeScreenState extends State<D_HomeScreen> {
   }
 
   void _navigateToCategoryProducts(String categoryName) {
-    // Navigate to search products screen with the selected category
+    // Map home categories to search page categories
+    final Map<String, String> mapToSearchCategory = {
+      'Wires & Cables': 'Wires & Cables',
+      'Switches': 'Switches & Sockets',
+      'Lights': 'LED Lights',
+      'Motors': 'Pumps',
+      'Panels': 'Fans',
+      'Safety Tools': 'Tools',
+    };
+
+    final String mapped = mapToSearchCategory[categoryName] ?? categoryName;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => D_SearchProductsScreen(selectedCategory: categoryName),
+        builder: (context) => D_SearchProductsScreen(selectedCategory: mapped),
+      ),
+    );
+  }
+
+  // Helper methods for product data
+  String _getCategoryFromProduct(String productName) {
+    if (productName.toLowerCase().contains('bulb') || 
+        productName.toLowerCase().contains('light') || 
+        productName.toLowerCase().contains('tube')) {
+      return 'lights';
+    } else if (productName.toLowerCase().contains('mcb') || 
+               productName.toLowerCase().contains('circuit') || 
+               productName.toLowerCase().contains('breaker')) {
+      return 'circuit-breakers';
+    } else if (productName.toLowerCase().contains('wire') || 
+               productName.toLowerCase().contains('cable')) {
+      return 'wires-and-cables';
+    } else if (productName.toLowerCase().contains('motor')) {
+      return 'motors';
+    } else if (productName.toLowerCase().contains('panel')) {
+      return 'panels';
+    } else if (productName.toLowerCase().contains('solar') || 
+               productName.toLowerCase().contains('controller')) {
+      return 'transformer';
+    } else if (productName.toLowerCase().contains('screwdriver') || 
+               productName.toLowerCase().contains('tool')) {
+      return 'tools';
+    } else if (productName.toLowerCase().contains('conduit')) {
+      return 'conduits';
+    } else if (productName.toLowerCase().contains('glove') || 
+               productName.toLowerCase().contains('safety')) {
+      return 'safety';
+    } else {
+      return 'lights'; // Default category
+    }
+  }
+
+  String _getProductDescription(String productName) {
+    if (productName.toLowerCase().contains('bulb')) {
+      return 'High-quality LED bulb with excellent energy efficiency and long lifespan. Perfect for residential and commercial lighting applications.';
+    } else if (productName.toLowerCase().contains('mcb')) {
+      return 'Miniature Circuit Breaker designed for electrical protection. Features reliable tripping mechanism and compact design for easy installation.';
+    } else if (productName.toLowerCase().contains('wire')) {
+      return 'Premium quality electrical wire with excellent conductivity and durability. Suitable for various electrical installations and applications.';
+    } else if (productName.toLowerCase().contains('tube')) {
+      return 'Energy-efficient tube light providing bright and uniform illumination. Ideal for offices, shops, and commercial spaces.';
+    } else if (productName.toLowerCase().contains('motor')) {
+      return 'Industrial-grade motor with high efficiency and reliable performance. Suitable for various industrial applications and heavy-duty operations.';
+    } else if (productName.toLowerCase().contains('panel')) {
+      return 'Distribution panel designed for safe and organized electrical distribution. Features high-quality components and easy maintenance access.';
+    } else if (productName.toLowerCase().contains('solar')) {
+      return 'Solar charge controller for efficient battery charging and protection. Features advanced MPPT technology and comprehensive safety features.';
+    } else if (productName.toLowerCase().contains('screwdriver')) {
+      return 'Professional insulated screwdriver set for safe electrical work. Features ergonomic handles and high-quality steel construction.';
+    } else if (productName.toLowerCase().contains('conduit')) {
+      return 'PVC conduit pipe for electrical cable protection. Features excellent durability, weather resistance, and easy installation.';
+    } else if (productName.toLowerCase().contains('glove')) {
+      return 'Electrical safety gloves providing protection against electrical hazards. Features excellent insulation properties and comfortable fit.';
+    } else {
+      return 'High-quality electrical product designed for reliable performance and safety. Suitable for various electrical applications and installations.';
+    }
+  }
+
+  Map<String, String> _getProductSpecifications(String productName) {
+    if (productName.toLowerCase().contains('bulb')) {
+      return {
+        'Power': '9W',
+        'Voltage': '220-240V AC',
+        'Luminous Flux': '800 lm',
+        'Color Temperature': '6500K (Daylight)',
+        'Lifespan': '25,000 hours',
+        'Base Type': 'B22',
+        'Dimmable': 'No',
+        'Certification': 'BIS Certified',
+      };
+    } else if (productName.toLowerCase().contains('mcb')) {
+      return {
+        'Current Rating': '16A',
+        'Voltage': '240V AC',
+        'Breaking Capacity': '6kA',
+        'Type': 'Type C',
+        'Poles': 'Single Pole',
+        'Mounting': 'DIN Rail',
+        'Certification': 'BIS Certified',
+        'Brand': 'ElectroMart',
+      };
+    } else if (productName.toLowerCase().contains('wire')) {
+      return {
+        'Conductor': 'Copper',
+        'Cross Section': '2.5 sq mm',
+        'Voltage': '1100V',
+        'Insulation': 'PVC',
+        'Sheath': 'PVC',
+        'Standards': 'IS 694',
+        'Certification': 'BIS Certified',
+        'Color': 'Red/Black',
+      };
+    } else {
+      return {
+        'Brand': 'ElectroMart',
+        'Category': 'Electrical',
+        'Certification': 'BIS Certified',
+        'Warranty': '1 Year',
+        'Country of Origin': 'India',
+        'Material': 'Premium Quality',
+        'Voltage': '220-240V AC',
+        'Standards': 'IS Standards',
+      };
+    }
+  }
+
+  Widget _buildAnimatedStatCard(BuildContext context, Map<String, dynamic> stat, int index) {
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 800 + (index * 200)), // Staggered animation
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 50 * (1 - value)), // Slide up animation
+          child: Opacity(
+            opacity: value,
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.06 + (value * 0.04)), // Subtle hover effect
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1 * value),
+                      blurRadius: 8 * value,
+                      offset: Offset(0, 4 * value),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                child: Column(
+                  children: [
+                    // Animated icon
+                    TweenAnimationBuilder<double>(
+                      duration: Duration(milliseconds: 1200 + (index * 150)),
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      builder: (context, iconValue, child) {
+                        return Transform.scale(
+                          scale: 0.5 + (0.5 * iconValue),
+                          child: Opacity(
+                            opacity: iconValue,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                stat['icon'] as IconData,
+                                color: Colors.white,
+                                size: ResponsiveHelper.getResponsiveFontSize(context, mobile: 20, tablet: 24, desktop: 28),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    // Animated counter
+                    TweenAnimationBuilder<double>(
+                      duration: Duration(milliseconds: 1500 + (index * 100)),
+                      tween: Tween(begin: 0.0, end: stat['targetValue'] as double),
+                      builder: (context, animatedValue, child) {
+                        String displayValue;
+                        if (stat['label'] == 'Products') {
+                          displayValue = '${(animatedValue / 1000).toStringAsFixed(0)}K+';
+                        } else if (stat['label'] == 'Suppliers') {
+                          displayValue = '${animatedValue.toStringAsFixed(0)}+';
+                        } else if (stat['label'] == 'Customers') {
+                          displayValue = '${(animatedValue / 1000).toStringAsFixed(0)}K+';
+                        } else if (stat['label'] == 'Satisfaction') {
+                          displayValue = '${animatedValue.toStringAsFixed(0)}%';
+                        } else if (stat['label'] == 'Cities Covered') {
+                          displayValue = '${animatedValue.toStringAsFixed(0)}+';
+                        } else if (stat['label'] == 'Support') {
+                          displayValue = '24x7';
+                        } else if (stat['label'] == 'Monthly Views') {
+                          displayValue = '${(animatedValue / 1000000).toStringAsFixed(1)}M+';
+                        } else if (stat['label'] == 'Average Rating') {
+                          displayValue = '${animatedValue.toStringAsFixed(1)}/5';
+                        } else {
+                          displayValue = stat['number'] as String;
+                        }
+                        
+                        return Transform.scale(
+                          scale: 0.8 + (0.2 * value), // Scale animation
+                          child: Text(
+                            displayValue,
+                            style: GoogleFonts.manrope(
+                              fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 22, tablet: 26, desktop: 30),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 6),
+                    // Animated label
+                    TweenAnimationBuilder<double>(
+                      duration: Duration(milliseconds: 1000 + (index * 150)),
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      builder: (context, labelValue, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 20 * (1 - labelValue)),
+                          child: Opacity(
+                            opacity: labelValue,
+                            child: Text(
+                              stat['label'] as String,
+                              style: GoogleFonts.manrope(
+                                fontSize: ResponsiveHelper.getResponsiveFontSize(context, mobile: 12, tablet: 14, desktop: 16),
+                                color: Colors.white70,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildAdminNavItem() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.red[50],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            Icons.admin_panel_settings,
+            color: Colors.red[600],
+            size: 20,
+          ),
+        ),
+        title: Text(
+          'Admin Portal',
+          style: GoogleFonts.manrope(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.red[600],
+          ),
+        ),
+        subtitle: Text(
+          'Superuser Access',
+          style: GoogleFonts.manrope(
+            fontSize: 12,
+            color: Colors.red[400],
+          ),
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AdminLoginScreen(),
+            ),
+          );
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        tileColor: Colors.red[25],
       ),
     );
   }

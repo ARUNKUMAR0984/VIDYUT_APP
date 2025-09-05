@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
@@ -71,7 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         title: Text(
           'Sign Up',
-          style: GoogleFonts.inter(color: Colors.grey[900], fontWeight: FontWeight.bold),
+          style: GoogleFonts.manrope(color: Colors.grey[900], fontWeight: FontWeight.bold),
         ),
       ),
       body: Row(
@@ -135,9 +136,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(24),
                     child: Column(
                       children: [
-                        _buildBenefit(Icons.shopping_cart, 'Buy Electrical Products'),
+                        _buildBenefit(Ionicons.cart_outline, 'Buy Electrical Products'),
                         const SizedBox(height: 16),
-                        _buildBenefit(Icons.store, 'Sell Your Products'),
+                        _buildBenefit(Ionicons.storefront_outline, 'Sell Your Products'),
                         const SizedBox(height: 16),
                         _buildBenefit(Icons.local_shipping, 'Fast & Secure Delivery'),
                         const SizedBox(height: 16),

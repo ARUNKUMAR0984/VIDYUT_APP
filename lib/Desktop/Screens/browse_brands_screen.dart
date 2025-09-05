@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
 import 'state_info_screen.dart';
@@ -86,9 +87,9 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                     controller: _sidebarSearchController,
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       suffixIcon: IconButton(
-                        icon: const Icon(Icons.grid_view),
+                        icon: const Icon(Ionicons.grid_outline),
                         onPressed: () {},
                       ),
                       border: OutlineInputBorder(
@@ -108,19 +109,19 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands', isActive: true),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -245,7 +246,7 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                           controller: _searchController,
                           decoration: InputDecoration(
                             hintText: 'Search products...',
-                            prefixIcon: const Icon(Icons.search),
+                            prefixIcon: const Icon(Ionicons.search_outline),
                             suffixIcon: Container(
                               margin: const EdgeInsets.all(4),
                               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -283,7 +284,7 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.location_on, color: Colors.grey[600]),
+                            Icon(Ionicons.location_outline, color: Colors.grey[600]),
                             const SizedBox(width: 8),
                             const Text('Deliver to: Set location'),
                           ],
@@ -298,7 +299,7 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: const Icon(Icons.favorite_border),
+                        icon: const Icon(Ionicons.heart_outline),
                         onPressed: () {},
                       ),
                       
@@ -380,7 +381,7 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                                  controller: _brandSearchController,
                                  decoration: InputDecoration(
                                    hintText: 'Search brands...',
-                                   prefixIcon: const Icon(Icons.search),
+                                   prefixIcon: const Icon(Ionicons.search_outline),
                                    suffixIcon: _searchQuery.isNotEmpty
                                      ? IconButton(
                                          icon: const Icon(Icons.clear),
@@ -673,11 +674,11 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
   }
   
   List<Map<String, dynamic>> _getFilteredBrands() {
-    // Sample brand data
+    // Sample brand data - using actual seller names from products
     final List<Map<String, dynamic>> allBrands = [
       {
-        'name': 'Havells',
-        'initial': 'H',
+        'name': 'ElectroMart',
+        'initial': 'E',
         'rating': 4.6,
         'description': 'Leading electrical equipment company known for quality switches, fans, and lighting solutions',
         'products': 28,
@@ -686,8 +687,8 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
         'color': Colors.purple,
       },
       {
-        'name': 'Schneider',
-        'initial': 'S',
+        'name': 'Power Solutions',
+        'initial': 'P',
         'rating': 4.6,
         'description': 'Multinational corporation specializing in energy management and automation solutions',
         'products': 18,
@@ -696,48 +697,48 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
         'color': Colors.purple,
       },
       {
-        'name': 'ABB',
-        'initial': 'A',
+        'name': 'Cable World',
+        'initial': 'C',
         'rating': 4.6,
-        'description': 'Quality electrical products and solutions from ABB',
+        'description': 'Quality electrical products and solutions from Cable World',
         'products': 17,
         'reviews': 556,
         'categories': ['circuit breakers', 'motors', 'panels', '+3 more'],
-        'color': Colors.purple,
+        'color': Colors.blue,
       },
       {
-        'name': 'Crompton',
-        'initial': 'C',
+        'name': 'Electrical Store',
+        'initial': 'E',
         'rating': 4.5,
         'description': 'Trusted brand for fans, lights, and electrical appliances',
         'products': 25,
         'reviews': 892,
         'categories': ['Fans', 'Lights', 'Appliances', '+2 more'],
-        'color': Colors.purple,
+        'color': Colors.green,
       },
       {
-        'name': 'Philips',
-        'initial': 'P',
+        'name': 'Fan Hub',
+        'initial': 'F',
         'rating': 4.7,
         'description': 'Global leader in lighting and healthcare technology',
         'products': 22,
         'reviews': 1156,
         'categories': ['LED Lights', 'Smart Lighting', 'Healthcare', '+1 more'],
-        'color': Colors.purple,
+        'color': Colors.orange,
       },
       {
-        'name': 'Legrand',
-        'initial': 'L',
+        'name': 'Wire Solutions',
+        'initial': 'W',
         'rating': 4.4,
         'description': 'French multinational specializing in electrical and digital building infrastructures',
         'products': 15,
         'reviews': 445,
         'categories': ['Switches', 'Sockets', 'Cables', '+1 more'],
-        'color': Colors.purple,
+        'color': Colors.red,
       },
       {
-        'name': 'Siemens',
-        'initial': 'S',
+        'name': 'Bright Lights Co',
+        'initial': 'B',
         'rating': 4.8,
         'description': 'German multinational conglomerate in industry, energy, and healthcare',
         'products': 20,
@@ -746,25 +747,85 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
         'color': Colors.purple,
       },
       {
-        'name': 'Anchor',
-        'initial': 'A',
+        'name': 'Starlite',
+        'initial': 'S',
         'rating': 4.3,
         'description': 'Popular Indian brand for electrical accessories and switches',
         'products': 30,
         'reviews': 1234,
         'categories': ['Switches', 'Sockets', 'Wires', '+3 more'],
-        'color': Colors.purple,
+        'color': Colors.teal,
       },
       {
-        'name': 'Finolex',
-        'initial': 'F',
+        'name': 'Breaker Mart',
+        'initial': 'B',
         'rating': 4.2,
         'description': 'Leading manufacturer of electrical cables and wires',
         'products': 35,
         'reviews': 567,
         'categories': ['Cables', 'Wires', 'Conduits', '+2 more'],
-        'color': Colors.purple,
-             },
+        'color': Colors.indigo,
+      },
+      {
+        'name': 'Conduit Depot',
+        'initial': 'C',
+        'rating': 4.1,
+        'description': 'Specialized in industrial conduits and electrical infrastructure',
+        'products': 12,
+        'reviews': 234,
+        'categories': ['Conduits', 'Industrial', 'Infrastructure'],
+        'color': Colors.brown,
+      },
+      {
+        'name': 'Tool House',
+        'initial': 'T',
+        'rating': 4.4,
+        'description': 'Professional tools and equipment for electrical work',
+        'products': 28,
+        'reviews': 456,
+        'categories': ['Tools', 'Equipment', 'Professional'],
+        'color': Colors.amber,
+      },
+      {
+        'name': 'Motor Sales',
+        'initial': 'M',
+        'rating': 4.5,
+        'description': 'Industrial motors and electrical machinery',
+        'products': 15,
+        'reviews': 345,
+        'categories': ['Motors', 'Machinery', 'Industrial'],
+        'color': Colors.cyan,
+      },
+      {
+        'name': 'Panel Point',
+        'initial': 'P',
+        'rating': 4.6,
+        'description': 'Electrical panels and distribution systems',
+        'products': 22,
+        'reviews': 678,
+        'categories': ['Panels', 'Distribution', 'Systems'],
+        'color': Colors.deepOrange,
+      },
+      {
+        'name': 'SecureWear',
+        'initial': 'S',
+        'rating': 4.3,
+        'description': 'Safety equipment and protective gear',
+        'products': 18,
+        'reviews': 234,
+        'categories': ['Safety', 'Protective', 'Equipment'],
+        'color': Colors.deepPurple,
+      },
+      {
+        'name': 'Solar Shop',
+        'initial': 'S',
+        'rating': 4.7,
+        'description': 'Solar panels and renewable energy solutions',
+        'products': 25,
+        'reviews': 567,
+        'categories': ['Solar', 'Renewable', 'Energy'],
+        'color': Colors.lime,
+      },
      ];
      
      // Filter brands based on search query
@@ -781,21 +842,33 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
   }
   
   Widget _buildBrandCard(Map<String, dynamic> brand) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => D_SearchProductsScreen(selectedBrand: brand['name']),
           ),
-        ],
-      ),
+        );
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey[300]!),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -872,6 +945,20 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                       ],
                     ),
                   ],
+                ),
+              ),
+              
+              // Click indicator
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.blue[600],
                 ),
               ),
             ],
@@ -990,7 +1077,12 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigate to brand products page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => D_SearchProductsScreen(selectedBrand: brand['name']),
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.inventory_2, size: 16),
                   label: const Text('View Products'),
@@ -1016,7 +1108,12 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    // Navigate to brand details page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => D_SearchProductsScreen(selectedBrand: brand['name']),
+                      ),
+                    );
                   },
                   icon: Icon(
                     Icons.arrow_forward,
@@ -1028,6 +1125,8 @@ class _D_BrowseBrandsScreenState extends State<D_BrowseBrandsScreen> {
             ],
           ),
         ],
+      ),
+        ),
       ),
     );
   }

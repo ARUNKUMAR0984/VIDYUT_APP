@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class B2BLeadsScreen extends StatefulWidget {
@@ -96,7 +97,7 @@ class _B2BLeadsScreenState extends State<B2BLeadsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text('B2B Leads', style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: Colors.grey[900])),
+        title: Text('B2B Leads', style: GoogleFonts.manrope(fontWeight: FontWeight.w700, color: Colors.grey[900])),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -112,7 +113,7 @@ class _B2BLeadsScreenState extends State<B2BLeadsScreen> {
                     onChanged: (_) => setState(() {}),
                     decoration: InputDecoration(
                       hintText: 'Search company, sector, city...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey[300]!)),
                       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.blue[800]!, width: 2)),
                       filled: true,
@@ -170,18 +171,18 @@ class _B2BLeadsScreenState extends State<B2BLeadsScreen> {
             children: [
               Container(width: 28, height: 28, decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(6)), child: const Icon(Icons.domain, size: 18, color: Colors.grey)),
               const SizedBox(width: 10),
-              Expanded(child: Text(l['name']!, style: GoogleFonts.inter(fontWeight: FontWeight.w700))),
+              Expanded(child: Text(l['name']!, style: GoogleFonts.manrope(fontWeight: FontWeight.w700))),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(999)),
-                child: Text(l['tag']!, style: GoogleFonts.inter(fontSize: 11, color: Colors.grey[700])),
+                child: Text(l['tag']!, style: GoogleFonts.manrope(fontSize: 11, color: Colors.grey[700])),
               ),
             ],
           ),
           const SizedBox(height: 6),
-          Text('${l['sector']} · ${l['city']}', style: GoogleFonts.inter(color: Colors.grey[700])),
+          Text('${l['sector']} · ${l['city']}', style: GoogleFonts.manrope(color: Colors.grey[700])),
           const SizedBox(height: 4),
-          Text('Turnover: ${l['turnover']}', style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600])),
+          Text('Turnover: ${l['turnover']}', style: GoogleFonts.manrope(fontSize: 12, color: Colors.grey[600])),
           const Spacer(),
           Row(
             children: [

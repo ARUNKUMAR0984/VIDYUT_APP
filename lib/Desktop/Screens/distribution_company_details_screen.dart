@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
 import 'browse_brands_screen.dart';
@@ -82,7 +83,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                     controller: _sidebarSearchController,
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: Colors.grey[300]!),
@@ -100,19 +101,19 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info', isActive: true),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info', isActive: true),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -219,7 +220,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                             controller: _searchController,
                             decoration: InputDecoration(
                               hintText: 'Search products...',
-                              prefixIcon: const Icon(Icons.search),
+                              prefixIcon: const Icon(Ionicons.search_outline),
                               suffixIcon: Container(
                                 margin: const EdgeInsets.all(4),
                                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -228,7 +229,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: const Icon(
-                                  Icons.grid_view,
+                                  Ionicons.grid_outline,
                                   size: 16,
                                   color: Colors.grey,
                                 ),
@@ -255,7 +256,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.location_on, color: Colors.grey[600]),
+                              Icon(Ionicons.location_outline, color: Colors.grey[600]),
                               const SizedBox(width: 8),
                               const Text('Deliver to: Set location'),
                             ],
@@ -270,7 +271,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                           onPressed: () {},
                         ),
                         IconButton(
-                          icon: const Icon(Icons.favorite_border),
+                          icon: const Icon(Ionicons.heart_outline_border),
                           onPressed: () {},
                         ),
                         
@@ -476,7 +477,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    _buildTag(Icons.location_on, 'Mumbai Metropolitan Region'),
+                                    _buildTag(Ionicons.location_outline, 'Mumbai Metropolitan Region'),
                                     const SizedBox(width: 16),
                                     _buildTag(Icons.people, '3.2 Million'),
                                     const SizedBox(width: 16),
@@ -536,7 +537,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                                       
                                       // Details
                                       _buildInfoRow(Icons.calendar_today, 'Established: 1905'),
-                                      _buildInfoRow(Icons.location_on, 'Address: Mumbai, Maharashtra, India'),
+                                      _buildInfoRow(Ionicons.location_outline, 'Address: Mumbai, Maharashtra, India'),
                                       _buildInfoRow(Icons.phone, 'Phone: +91-22-1234-5678'),
                                       _buildInfoRow(Icons.email, 'Email: info@mest.com'),
                                       _buildInfoRow(Icons.language, 'Website: www.mest.com'),
@@ -570,7 +571,7 @@ class _D_DistributionCompanyDetailsScreenState extends State<D_DistributionCompa
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.person,
+                                            Ionicons.person_outline,
                                             color: Colors.blue[600],
                                             size: 24,
                                           ),

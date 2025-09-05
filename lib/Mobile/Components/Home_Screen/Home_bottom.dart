@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class M_BottomNavBar extends StatefulWidget {
@@ -27,23 +28,23 @@ class _M_BottomNavBarState extends State<M_BottomNavBar> {
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey,
       showUnselectedLabels: true,
-      selectedLabelStyle: GoogleFonts.inter(
+      selectedLabelStyle: GoogleFonts.manrope(
     fontSize: 14,
     fontWeight: FontWeight.w600,
   ),
-  unselectedLabelStyle: GoogleFonts.inter(
+  unselectedLabelStyle: GoogleFonts.manrope(
     fontSize: 12,
     fontWeight: FontWeight.w400,
   ),
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Ionicons.home_outline),
           label: "Home",
           
           
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
+          icon: Icon(Ionicons.search_outline),
           label: "Search",
         ),
         BottomNavigationBarItem(
@@ -55,7 +56,7 @@ class _M_BottomNavBarState extends State<M_BottomNavBar> {
           label: "Orders",
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(Ionicons.person_outline),
           label: "Profile",
         ),
       ],

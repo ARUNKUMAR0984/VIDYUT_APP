@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 import 'search_products_screen.dart';
@@ -90,7 +91,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ),
         title: Text(
           title,
-          style: GoogleFonts.inter(
+          style: GoogleFonts.manrope(
             color: isActive ? Colors.blue[800] : Colors.grey[700],
             fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -104,7 +105,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 child: Text(
                   badge,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.manrope(
                     color: Colors.white,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -198,7 +199,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Search...',
-                      prefixIcon: const Icon(Icons.search),
+                      prefixIcon: const Icon(Ionicons.search_outline),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.close),
                         onPressed: () {},
@@ -220,20 +221,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _buildNavItem(Icons.home, 'Home'),
-                        _buildNavItem(Icons.search, 'Search Products'),
+                        _buildNavItem(Ionicons.home_outline, 'Home'),
+                        _buildNavItem(Ionicons.search_outline, 'Search Products'),
                         _buildNavItem(Icons.branding_watermark, 'Browse Brands'),
-                        _buildNavItem(Icons.shopping_bag, 'My Orders', badge: '3'),
-                        _buildNavItem(Icons.store, 'Sell'),
-                        _buildNavItem(Icons.message, 'Messages'),
-                        _buildNavItem(Icons.location_on, 'State Info'),
+                        _buildNavItem(Ionicons.bag_outline, 'My Orders', badge: '3'),
+                        _buildNavItem(Ionicons.storefront_outline, 'Sell'),
+                        _buildNavItem(Ionicons.chatbubbles_outline, 'Messages'),
+                        _buildNavItem(Ionicons.location_outline, 'State Info'),
                         _buildNavItem(Icons.trending_up, 'Trending'),
                         
                         const SizedBox(height: 30),
                         
                         // Account Section
-                        _buildNavItem(Icons.person, 'Profile', isActive: true),
-                        _buildNavItem(Icons.settings, 'Settings'),
+                        _buildNavItem(Ionicons.person_outline, 'Profile', isActive: true),
+                        _buildNavItem(Ionicons.settings_outline, 'Settings'),
                         _buildNavItem(Icons.help, 'Help'),
                       ],
                     ),
@@ -285,7 +286,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.logout, size: 20),
+                        icon: const Icon(Ionicons.log_out_outline, size: 20),
                         onPressed: _logout,
                       ),
                     ],
@@ -425,9 +426,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 16),
-                                  _buildStatItem(Icons.shopping_bag, 'Orders', '12'),
+                                  _buildStatItem(Ionicons.bag_outline, 'Orders', '12'),
                                   const SizedBox(height: 12),
-                                  _buildStatItem(Icons.favorite, 'Wishlist', '8'),
+                                  _buildStatItem(Ionicons.heart_outline, 'Wishlist', '8'),
                                   const SizedBox(height: 12),
                                   _buildStatItem(Icons.star, 'Reviews', '5'),
                                   const SizedBox(height: 12),
@@ -583,7 +584,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                       maxLines: 3,
                                       decoration: InputDecoration(
                                         labelText: 'Address',
-                                        prefixIcon: const Icon(Icons.location_on_outlined),
+                                        prefixIcon: const Icon(Ionicons.location_outline),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(8),
                                         ),

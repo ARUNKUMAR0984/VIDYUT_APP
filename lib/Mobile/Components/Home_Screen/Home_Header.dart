@@ -39,7 +39,7 @@ class M_Home_Header extends StatelessWidget {
                       child: Text(
                         "First Time in India Largest Electricity Information Platform for B2B, D2C and C2C",
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.manrope(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -60,7 +60,7 @@ class M_Home_Header extends StatelessWidget {
                     child: Text(
                       "Produced by Madhu Powertech Private Limited",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.manrope(
                         color: const Color.fromARGB(255, 71, 71, 71),
                         fontSize: 10,
                         fontWeight: FontWeight.normal,
